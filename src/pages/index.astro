@@ -1,0 +1,137 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import ProductMockup from '../components/ProductMockup.astro';
+import SceneCanvas from '../components/experience/SceneCanvas.astro';
+import { ShieldCheck, Workflow, PanelsTopLeft, Cuboid, ScanSearch, ClipboardCheck, MessageSquare, Search, PenTool, Hammer, Plug, RefreshCw, Mail } from '@lucide/astro';
+
+const capabilities = [
+  { id: 'cybersecurity', number: '01', eyebrow: 'Cybersecurity', title: 'Find the gaps before someone else does.', copy: 'See your exposure clearly, understand the risk it creates and strengthen the controls that protect your organisation.' },
+  { id: 'automation', number: '02', eyebrow: 'AI & automation', title: 'Turn repetitive work into intelligent workflows.', copy: 'We integrate practical AI into real operations—reducing friction, connecting decisions and giving teams time back.' },
+  { id: 'digital', number: '03', eyebrow: 'Digital solutions', title: 'Build systems around the way your organisation actually works.', copy: 'Custom platforms, applications and integrations designed around your people, processes and existing technology.' },
+  { id: 'spatial', number: '04', eyebrow: 'XR & spatial computing', title: 'Turn complex ideas into experiences people can interact with.', copy: 'Immersive training, simulation and spatial interfaces that make complex environments easier to understand.' },
+];
+const products = [
+  { type: 'cyber', name: 'Cybersecurity Check', copy: 'Understand your external security exposure before it becomes a problem.' },
+  { type: 'cleaning', name: 'Cleaning QA', copy: 'Make quality assurance visible, accountable and easier to manage.' },
+  { type: 'inlyr', name: 'Inlyr', copy: 'Turn customer feedback into clear, prioritised actions.' },
+] as const;
+const capabilityIcons = [ShieldCheck, Workflow, PanelsTopLeft, Cuboid];
+const productIcons = [ScanSearch, ClipboardCheck, MessageSquare];
+const processSteps = [
+  { number: '01', label: 'Discover', detail: 'Understand the challenge', icon: Search },
+  { number: '02', label: 'Design', detail: 'Shape the right system', icon: PenTool },
+  { number: '03', label: 'Build', detail: 'Create the working solution', icon: Hammer },
+  { number: '04', label: 'Integrate', detail: 'Connect it safely', icon: Plug },
+  { number: '05', label: 'Improve', detail: 'Measure and evolve', icon: RefreshCw },
+];
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Intelligence Layer builds secure digital systems, AI automation and immersive technology for Australian organisations." />
+    <meta name="theme-color" content="#f7f8fa" />
+    <link rel="icon" href="/favicon.svg" />
+    <title>Intelligence Layer — Practical technology for complex organisations</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-header>
+      <Logo />
+      <button class="menu-button" aria-expanded="false" aria-controls="navigation"><span>Menu</span><i></i></button>
+      <nav id="navigation" aria-label="Primary navigation">
+        <a href="#capabilities">Capabilities</a><a href="#products">Products</a><a href="#process">How we work</a><a href="#work">Work</a><a class="nav-contact" href="#contact">Contact <span>↗</span></a>
+      </nav>
+    </header>
+
+    <SceneCanvas />
+
+    <main id="main">
+      <section class="hero section-grid" id="top" data-scene="hero">
+        <div class="content content-wide">
+          <p class="eyebrow"><span></span> Secure systems · intelligent operations</p>
+          <h1>Technology that makes organisations <em>smarter.</em></h1>
+          <p class="lead">Intelligence Layer designs and builds secure digital systems, AI automation and immersive technology that make organisations safer, smarter and easier to operate.</p>
+          <div class="actions"><a class="button button-primary" href="#contact">Start a conversation <span>↗</span></a><a class="button button-text" href="#layer">Explore what we do <span>↓</span></a></div>
+        </div>
+        <p class="hero-note">Strategy through implementation<br/>Australia</p>
+      </section>
+
+      <section class="layer-intro section-grid" id="layer" data-scene="layered">
+        <div class="content">
+          <p class="section-index">01 / The intelligence layer</p>
+          <h2>Add an intelligence layer to the way you work.</h2>
+          <p class="lead">You already have the foundations: people, processes, systems and data. We add technology across them—strengthening what works and connecting what does not.</p>
+          <div class="foundation-list" aria-label="Organisational foundations"><span>People</span><span>Processes</span><span>Systems</span><span>Data</span></div>
+        </div>
+      </section>
+
+      <div id="capabilities" class="capabilities-wrap">
+        <div class="capability-heading section-grid"><div class="content"><p class="section-index">02 / Capabilities</p><h2>Useful technology.<br/>Built for the real world.</h2></div></div>
+        {capabilities.map((item, index) => {
+          const Icon = capabilityIcons[index];
+          return (
+          <section class="capability section-grid" id={item.id} data-scene={item.id}>
+            <div class="content">
+              <div class="capability-meta"><span class="icon-frame"><Icon size={25} stroke-width={1.5} /></span><p class="cap-number">{item.number}</p></div>
+              <p class="eyebrow">{item.eyebrow}</p>
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+              <a href="#contact">Discuss this capability <span>↗</span></a>
+            </div>
+          </section>
+          );
+        })}
+      </div>
+
+      <section class="products" id="products" data-scene="products">
+        <div class="section-head"><div><p class="section-index">03 / Products</p><h2>Technology we're building</h2></div><p>Focused products created from problems we have seen first-hand.</p></div>
+        <div class="product-list">
+          {products.map((product, index) => {
+            const Icon = productIcons[index];
+            return (
+            <article class="product-card">
+              <div class="product-copy"><span class="icon-frame icon-frame-dark"><Icon size={24} stroke-width={1.5} /></span><p class="product-num">0{index + 1}</p><h3>{product.name}</h3><p>{product.copy}</p><span class="status">In development</span></div>
+              <ProductMockup type={product.type} />
+            </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="process" id="process" data-scene="process">
+        <div class="section-head"><div><p class="section-index">04 / How we work</p><h2>From possibility<br/>to practical.</h2></div><p>Emerging technology matters when it solves a real problem. Our delivery model keeps the work grounded from the first conversation.</p></div>
+        <ol class="process-steps">{processSteps.map((step) => { const Icon = step.icon; return <li><span>{step.number}</span><div class="process-node"><Icon size={27} stroke-width={1.45} /></div><strong>{step.label}</strong><small>{step.detail}</small></li>; })}</ol>
+      </section>
+
+      <section class="work" id="work" data-scene="products">
+        <div class="section-head"><div><p class="section-index">05 / Selected work</p><h2>The work becomes<br/>the proof.</h2></div><p>Case studies are being prepared. This space will bring together the systems, outcomes and lessons from our work.</p></div>
+        <div class="work-placeholder">
+          <div class="work-visual"><span>Case study / Coming soon</span><div class="work-lines"><i></i><i></i><i></i></div></div>
+          <div><p class="eyebrow">Future case study</p><h3>Built to hold the full story.</h3><p>Project context, product media, measurable outcomes and implementation detail—without the inflated claims.</p></div>
+        </div>
+      </section>
+
+      <section class="final-cta" id="contact" data-scene="final">
+        <div class="cta-inner">
+          <p class="section-index">Start a conversation</p>
+          <h2>What could we add an intelligence layer to?</h2>
+          <p>Tell us about a challenge, system, workflow or opportunity. We’ll help you find the practical next move.</p>
+          <a class="button button-light" href="mailto:connect@intelligencelayer.com.au"><Mail size={19} stroke-width={1.6} /> connect@intelligencelayer.com.au <span>↗</span></a>
+        </div>
+      </section>
+    </main>
+    <footer><Logo compact={true} /><p>Secure systems. Intelligent operations.</p><p>© {new Date().getFullYear()} Intelligence Layer · Australia</p></footer>
+    <script>
+      const header = document.querySelector('[data-header]');
+      const menu = document.querySelector<HTMLButtonElement>('.menu-button');
+      const nav = document.querySelector('#navigation');
+      const updateHeader = () => header?.classList.toggle('scrolled', scrollY > 24);
+      updateHeader(); addEventListener('scroll', updateHeader, { passive: true });
+      menu?.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') === 'true'; menu.setAttribute('aria-expanded', String(!open)); nav?.classList.toggle('open', !open); });
+      nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { menu?.setAttribute('aria-expanded', 'false'); nav.classList.remove('open'); }));
+    </script>
+  </body>
+</html>
