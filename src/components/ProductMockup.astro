@@ -1,0 +1,20 @@
+---
+interface Props { type: 'cyber' | 'cleaning' | 'inlyr'; }
+const { type } = Astro.props;
+const content = {
+  cyber: { label: 'Exposure overview', value: '82', meta: 'Security posture', bars: [88, 64, 42] },
+  cleaning: { label: 'Quality overview', value: '94%', meta: 'Sites on target', bars: [94, 78, 86] },
+  inlyr: { label: 'Action overview', value: '27', meta: 'Priorities identified', bars: [76, 91, 58] },
+}[type];
+---
+<div class={`mockup mockup-${type}`} aria-label={`${content.label} placeholder interface`}>
+  <div class="mockup-top"><i></i><i></i><i></i><span>{content.label}</span></div>
+  <div class="mockup-body">
+    <div class="mockup-side"><b></b><b></b><b></b><b></b></div>
+    <div class="mockup-main">
+      <div class="mockup-kpi"><span>{content.meta}</span><strong>{content.value}</strong><small>Updated just now</small></div>
+      <div class="mockup-chart">{content.bars.map((bar) => <i style={`--h:${bar}%`}></i>)}</div>
+      <div class="mockup-lines"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</div>
