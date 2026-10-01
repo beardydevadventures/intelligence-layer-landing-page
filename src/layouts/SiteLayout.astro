@@ -1,0 +1,38 @@
+﻿---
+import '../styles/global.css';
+import '@fontsource-variable/instrument-sans';
+import Logo from '../components/Logo.astro';
+import { site, organisation } from '../data/site';
+interface Props { title: string; description: string; schema?: Record<string, unknown>[]; noindex?: boolean }
+const { title, description, schema = [], noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const graph = [organisation, ...schema];
+---
+<!doctype html>
+<html lang="en-AU"><head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
+<title>{title}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
+<meta name="theme-color" content="#f7f8fa" /><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+<meta property="og:type" content="website" /><meta property="og:site_name" content={site.name} /><meta property="og:locale" content="en_AU" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
+<meta name="twitter:card" content="summary" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
+<script is:inline type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\u003c')} />
+</head><body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header><Logo /><button class="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="Open navigation"><span>Menu</span><i></i></button><nav id="navigation" aria-label="Primary navigation"><a href="/#work">Work</a><a href="/#automation">AI & Automation</a><a href="/xr/vr-development/">XR Development</a><a href="/#process">How we work</a><a class="nav-contact" href="/#contact">Start a project <span aria-hidden="true">&#8599;</span></a></nav></header>
+<slot />
+<footer><Logo compact={true} /><p>AI automation &middot; Immersive technology</p><p>&copy; {new Date().getFullYear()} Intelligence Layer &middot; Brisbane, Australia</p></footer>
+<script>
+document.documentElement.classList.add('js-navigation');
+const header = document.querySelector('[data-header]');
+const menu = document.querySelector<HTMLButtonElement>('.menu-button');
+const nav = document.querySelector<HTMLElement>('#navigation');
+const updateHeader = () => header?.classList.toggle('scrolled', scrollY > 24);
+updateHeader(); addEventListener('scroll', updateHeader, { passive: true });
+const close = () => { menu?.setAttribute('aria-expanded', 'false'); menu?.setAttribute('aria-label', 'Open navigation'); nav?.classList.remove('open'); };
+menu?.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); menu.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); nav?.classList.toggle('open', open); });
+nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+addEventListener('keydown', event => { if (event.key === 'Escape' && menu?.getAttribute('aria-expanded') === 'true') { close(); menu.focus(); } });
+</script>
+</body></html>
+

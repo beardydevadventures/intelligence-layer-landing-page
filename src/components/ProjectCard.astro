@@ -1,0 +1,9 @@
+---
+import type { Project } from '../data/projects';
+interface Props { project: Project }
+const { project } = Astro.props;
+---
+<article class="project-card" id={project.slug}>
+  {project.video ? <video controls preload="none" poster={project.poster} width={project.image?.width ?? 1600} height={project.image?.height ?? 900} aria-label={project.video.title}><source src={project.video.src} type={project.video.type} /><a href={project.video.src}>Watch {project.title} project video</a></video> : project.image ? <img src={project.image.src} alt={project.image.alt} width={project.image.width} height={project.image.height} loading="lazy" decoding="async" /> : null}
+  <div class="project-copy"><p class="eyebrow">{project.category}</p><h3>{project.title}</h3><p class="project-headline">{project.headline}</p><p>{project.description}</p><ul class="tags" aria-label={`${project.title} technologies`}>{project.tags.map(tag => <li>{tag}</li>)}</ul>{project.note && <small>{project.note}</small>}</div>
+</article>

@@ -1,138 +1,30 @@
 ---
-import '../styles/global.css';
-import '@fontsource-variable/instrument-sans';
-import Logo from '../components/Logo.astro';
-import ProductMockup from '../components/ProductMockup.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import SceneCanvas from '../components/experience/SceneCanvas.astro';
-import { ShieldCheck, Workflow, PanelsTopLeft, Cuboid, ScanSearch, ClipboardCheck, MessageSquare, Search, PenTool, Hammer, Plug, RefreshCw, Mail } from '@lucide/astro';
-
-const capabilities = [
-  { id: 'cybersecurity', number: '01', eyebrow: 'Cybersecurity', title: 'Find the gaps before someone else does.', copy: 'See your exposure clearly, understand the risk it creates and strengthen the controls that protect your organisation.' },
-  { id: 'automation', number: '02', eyebrow: 'AI & automation', title: 'Turn repetitive work into intelligent workflows.', copy: 'We integrate practical AI into real operations—reducing friction, connecting decisions and giving teams time back.' },
-  { id: 'digital', number: '03', eyebrow: 'Digital solutions', title: 'Build systems around the way your organisation actually works.', copy: 'Custom platforms, applications and integrations designed around your people, processes and existing technology.' },
-  { id: 'spatial', number: '04', eyebrow: 'XR & spatial computing', title: 'Turn complex ideas into experiences people can interact with.', copy: 'Immersive training, simulation and spatial interfaces that make complex environments easier to understand.' },
-];
-const products = [
-  { type: 'cyber', name: 'Cybersecurity Check', copy: 'Understand your external security exposure before it becomes a problem.' },
-  { type: 'cleaning', name: 'Cleaning QA', copy: 'Make quality assurance visible, accountable and easier to manage.' },
-  { type: 'inlyr', name: 'Inlyr', copy: 'Turn customer feedback into clear, prioritised actions.' },
-] as const;
-const capabilityIcons = [ShieldCheck, Workflow, PanelsTopLeft, Cuboid];
-const productIcons = [ScanSearch, ClipboardCheck, MessageSquare];
-const processSteps = [
-  { number: '01', label: 'Discover', detail: 'Understand the challenge', icon: Search },
-  { number: '02', label: 'Design', detail: 'Shape the right system', icon: PenTool },
-  { number: '03', label: 'Build', detail: 'Create the working solution', icon: Hammer },
-  { number: '04', label: 'Integrate', detail: 'Connect it safely', icon: Plug },
-  { number: '05', label: 'Improve', detail: 'Measure and evolve', icon: RefreshCw },
-];
+import ProductMockup from '../components/ProductMockup.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { projects } from '../data/projects';
+import { site } from '../data/site';
+import { Search, PenTool, FlaskConical, Hammer, Plug, RefreshCw, Workflow, Cuboid, ScanSearch, ClipboardCheck, MessageSquare } from '@lucide/astro';
+const aiUses = ['AI agents and workflow automation', 'Document and data processing', 'Internal knowledge assistants', 'Customer support automation', 'Reporting and analysis', 'AI-enabled SaaS products', 'Integrations between existing systems'];
+const xrUses = [ ['Virtual Reality', 'Training, simulation, product experiences, games and immersive applications, including Meta Quest development.'], ['Mixed Reality', 'Experiences that combine digital content with the physical environment.'], ['Augmented Reality', 'Interactive information and digital content placed into the real world.'], ['WebXR & Digital Twins', 'Interactive 3D and spatial experiences accessible across browsers, desktop, mobile and headsets.'] ];
+const outcomes = [ ['Automate a business process', 'Replace repetitive manual workflows with AI-driven systems.'], ['Build an AI assistant', 'Give teams an intelligent interface to organisational knowledge, tools and systems.'], ['Create immersive training', 'Let people practise procedures and environments safely through VR or MR.'], ['Visualise something complex', 'Turn facilities, infrastructure, environments or data into interactive spatial experiences.'], ['Create a product experience', 'Build something customers can explore and interact with instead of simply reading about.'], ['Prototype an emerging technology idea', 'Validate an AI, AR, VR or MR concept before committing to a full production build.'] ];
+const steps = [ { label: 'Discover', detail: 'Understand the problem', icon: Search }, { label: 'Design', detail: 'Shape the experience or system', icon: PenTool }, { label: 'Prototype', detail: 'Validate the idea quickly', icon: FlaskConical }, { label: 'Build', detail: 'Create the production solution', icon: Hammer }, { label: 'Integrate', detail: 'Connect and deploy it safely', icon: Plug }, { label: 'Improve', detail: 'Measure, iterate and evolve', icon: RefreshCw } ];
+const products = [ { type: 'cyber', name: 'Cybersecurity Check', copy: 'Understand your external security exposure before it becomes a problem.', icon: ScanSearch }, { type: 'cleaning', name: 'Cleaning QA', copy: 'Make quality assurance visible, accountable and easier to manage.', icon: ClipboardCheck }, { type: 'inlyr', name: 'Inlyr', copy: 'Turn customer feedback into clear, prioritised actions.', icon: MessageSquare } ] as const;
 ---
-<!doctype html>
-<html lang="en-AU">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Intelligence Layer builds secure digital systems, AI automation and immersive technology for Australian organisations." />
-    <meta name="theme-color" content="#f7f8fa" />
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
-    <title>Intelligence Layer — Practical technology for complex organisations</title>
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header" data-header>
-      <Logo />
-      <button class="menu-button" aria-expanded="false" aria-controls="navigation"><span>Menu</span><i></i></button>
-      <nav id="navigation" aria-label="Primary navigation">
-        <a href="#capabilities">Capabilities</a><a href="#products">Products</a><a href="#process">How we work</a><a href="#work">Work</a><a class="nav-contact" href="#contact">Contact <span>↗</span></a>
-      </nav>
-    </header>
-
-    <SceneCanvas />
-
-    <main id="main">
-      <section class="hero section-grid" id="top" data-scene="hero">
-        <div class="content content-wide">
-          <p class="eyebrow"><span></span> Secure systems · intelligent operations</p>
-          <h1>Technology that makes organisations <em>smarter.</em></h1>
-          <p class="lead">Intelligence Layer designs and builds secure digital systems, AI automation and immersive technology that make organisations safer, smarter and easier to operate.</p>
-          <div class="actions"><a class="button button-primary" href="#contact">Start a conversation <span>↗</span></a><a class="button button-text" href="#layer">Explore what we do <span>↓</span></a></div>
-        </div>
-        <p class="hero-note">Strategy through implementation<br/>Australia</p>
-      </section>
-
-      <section class="layer-intro section-grid" id="layer" data-scene="layered">
-        <div class="content">
-          <p class="section-index">01 / The intelligence layer</p>
-          <h2>Add an intelligence layer to the way you work.</h2>
-          <p class="lead">You already have the foundations: people, processes, systems and data. We add technology across them—strengthening what works and connecting what does not.</p>
-          <div class="foundation-list" aria-label="Organisational foundations"><span>People</span><span>Processes</span><span>Systems</span><span>Data</span></div>
-        </div>
-      </section>
-
-      <div id="capabilities" class="capabilities-wrap">
-        <div class="capability-heading section-grid"><div class="content"><p class="section-index">02 / Capabilities</p><h2>Useful technology.<br/>Built for the real world.</h2></div></div>
-        {capabilities.map((item, index) => {
-          const Icon = capabilityIcons[index];
-          return (
-          <section class="capability section-grid" id={item.id} data-scene={item.id}>
-            <div class="content">
-              <div class="capability-meta"><span class="icon-frame"><Icon size={25} stroke-width={1.5} /></span><p class="cap-number">{item.number}</p></div>
-              <p class="eyebrow">{item.eyebrow}</p>
-              <h3>{item.title}</h3>
-              <p>{item.copy}</p>
-              <a href="#contact">Discuss this capability <span>↗</span></a>
-            </div>
-          </section>
-          );
-        })}
-      </div>
-
-      <section class="products" id="products" data-scene="products">
-        <div class="section-head"><div><p class="section-index">03 / Products</p><h2>Technology we're building</h2></div><p>Focused products created from problems we have seen first-hand.</p></div>
-        <div class="product-list">
-          {products.map((product, index) => {
-            const Icon = productIcons[index];
-            return (
-            <article class="product-card">
-              <div class="product-copy"><span class="icon-frame icon-frame-dark"><Icon size={24} stroke-width={1.5} /></span><p class="product-num">0{index + 1}</p><h3>{product.name}</h3><p>{product.copy}</p><span class="status">In development</span></div>
-              <ProductMockup type={product.type} />
-            </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section class="process" id="process" data-scene="process">
-        <div class="section-head"><div><p class="section-index">04 / How we work</p><h2>From possibility<br/>to practical.</h2></div><p>Emerging technology matters when it solves a real problem. Our delivery model keeps the work grounded from the first conversation.</p></div>
-        <ol class="process-steps">{processSteps.map((step) => { const Icon = step.icon; return <li><span>{step.number}</span><div class="process-node"><Icon size={27} stroke-width={1.45} /></div><strong>{step.label}</strong><small>{step.detail}</small></li>; })}</ol>
-      </section>
-
-      <section class="work" id="work" data-scene="products">
-        <div class="section-head"><div><p class="section-index">05 / Selected work</p><h2>The work becomes<br/>the proof.</h2></div><p>Case studies are being prepared. This space will bring together the systems, outcomes and lessons from our work.</p></div>
-        <div class="work-placeholder">
-          <div class="work-visual"><span>Case study / Coming soon</span><div class="work-lines"><i></i><i></i><i></i></div></div>
-          <div><p class="eyebrow">Future case study</p><h3>Built to hold the full story.</h3><p>Project context, product media, measurable outcomes and implementation detail—without the inflated claims.</p></div>
-        </div>
-      </section>
-
-      <section class="final-cta" id="contact" data-scene="final">
-        <div class="cta-inner">
-          <p class="section-index">Start a conversation</p>
-          <h2>What could we add an intelligence layer to?</h2>
-          <p>Tell us about a challenge, system, workflow or opportunity. We’ll help you find the practical next move.</p>
-          <a class="button button-light" href="mailto:connect@intelligencelayer.com.au"><Mail size={19} stroke-width={1.6} /> connect@intelligencelayer.com.au <span>↗</span></a>
-        </div>
-      </section>
-    </main>
-    <footer><Logo compact={true} /><p>Secure systems. Intelligent operations.</p><p>© {new Date().getFullYear()} Intelligence Layer · Australia</p></footer>
-    <script>
-      const header = document.querySelector('[data-header]');
-      const menu = document.querySelector<HTMLButtonElement>('.menu-button');
-      const nav = document.querySelector('#navigation');
-      const updateHeader = () => header?.classList.toggle('scrolled', scrollY > 24);
-      updateHeader(); addEventListener('scroll', updateHeader, { passive: true });
-      menu?.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') === 'true'; menu.setAttribute('aria-expanded', String(!open)); nav?.classList.toggle('open', !open); });
-      nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { menu?.setAttribute('aria-expanded', 'false'); nav.classList.remove('open'); }));
-    </script>
-  </body>
-</html>
+<SiteLayout title="AI Automation & XR Studio Brisbane | Intelligence Layer" description="Intelligence Layer builds AI automation, custom VR, AR and mixed reality experiences for organisations across Brisbane and Australia." schema={[{ '@type': 'WebSite', '@id': `${site.url}/#website`, url: `${site.url}/`, name: site.name, publisher: { '@id': `${site.url}/#organisation` }, inLanguage: 'en-AU' }]}>
+<SceneCanvas />
+<main id="main">
+<section class="hero section-grid" id="top" data-scene="hero"><div class="content content-wide"><p class="eyebrow"><span></span> AI & immersive technology studio</p><h1>AI automation and immersive experiences built for the <em>real world.</em></h1><p class="lead">Intelligence Layer designs AI-powered systems and custom VR, AR and mixed reality experiences for organisations across Brisbane and Australia.</p><div class="actions"><a class="button button-primary" href="#contact">Start a project <span aria-hidden="true">&#8599;</span></a><a class="button button-text" href="#work">See our work <span aria-hidden="true">&#8595;</span></a></div><p class="capability-line">AI Automation &middot; VR &middot; AR &middot; MR &middot; WebXR &middot; Digital Twins</p></div><p class="hero-note">Based in Brisbane<br />Working across Australia</p></section>
+<section class="work" id="work" data-scene="products"><div class="section-head"><div><p class="section-index">01 / Selected work</p><h2>Ideas made<br />interactive.</h2></div><p>Immersive applications, conversational AI and spatial concepts. A selection of what we build.</p></div><div class="project-grid">{projects.filter(p => p.featured).map(project => <ProjectCard project={project} />)}</div></section>
+<div class="capabilities-wrap">
+<section class="capability section-grid" id="automation" data-scene="automation"><div class="content"><div class="capability-meta"><span class="icon-frame"><Workflow size={25} stroke-width={1.5} /></span><p class="cap-number">02 / AI & Automation</p></div><h2>Put AI inside the work your team already does.</h2><p>We design AI systems that connect your tools, information and processes so repetitive work happens automatically and people can focus on decisions that matter.</p><ul class="use-list">{aiUses.map(item => <li>{item}</li>)}</ul><a href="mailto:connect@intelligencelayer.com.au?subject=AI%20automation%20project">Explore AI automation <span aria-hidden="true">&#8599;</span></a></div></section>
+<section class="capability section-grid" id="spatial" data-scene="spatial"><div class="content"><div class="capability-meta"><span class="icon-frame"><Cuboid size={25} stroke-width={1.5} /></span><p class="cap-number">03 / XR & Spatial Computing</p></div><h2>Create experiences people can step inside.</h2><p>We design and build immersive experiences across VR, AR, MR and the web, from early prototypes and digital twins to training, visualisation and production-ready interactive experiences.</p><div class="xr-categories">{xrUses.map(([title, copy]) => <div><h3>{title}</h3><p>{copy}</p></div>)}</div><a href="/xr/vr-development/">Explore XR development <span aria-hidden="true">&#8599;</span></a></div></section>
+</div>
+<section class="outcomes" id="build" data-scene="layered"><div class="section-head"><div><p class="section-index">04 / What we can build</p><h2>What could we<br />build together?</h2></div><p>Start with the problem you need to solve. We shape the technology around it.</p></div><div class="outcome-grid">{outcomes.map(([title, copy], i) => <article><p class="section-index">0{i + 1}</p><h3>{title}</h3><p>{copy}</p></article>)}</div><p class="supporting-copy">Behind every experience: custom digital platforms, integrations, cloud systems, cybersecurity and product development.</p></section>
+<section class="process" id="process" data-scene="process"><div class="section-head"><div><p class="section-index">05 / How we work</p><h2>From possibility<br />to practical.</h2></div><p>Emerging technology matters when it solves a real problem. Our delivery model keeps the work grounded from the first conversation.</p></div><ol class="process-steps">{steps.map((step, i) => { const Icon = step.icon; return <li><span>0{i + 1}</span><div class="process-node"><Icon size={27} stroke-width={1.45} /></div><strong>{step.label}</strong><small>{step.detail}</small></li>; })}</ol></section>
+<section class="products" id="products" data-scene="products"><div class="section-head"><div><p class="section-index">06 / Products & Ventures</p><h2>We build our own.</h2></div><p>We don't only build technology for clients. We build our own. These ventures put our product development experience into practice.</p></div><div class="product-list">{products.map((product, i) => { const Icon = product.icon; return <article class="product-card"><div class="product-copy"><span class="icon-frame icon-frame-dark"><Icon size={24} stroke-width={1.5} /></span><p class="product-num">0{i + 1}</p><h3>{product.name}</h3><p>{product.copy}</p><small class="product-status">In development</small></div><ProductMockup type={product.type} /></article>; })}</div></section>
+<ContactSection />
+</main>
+</SiteLayout>
