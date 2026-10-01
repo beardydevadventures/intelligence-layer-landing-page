@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "wrangler deploy",
     "typecheck": "astro check",
     "cms:dev": "sanity dev",
     "cms:build": "sanity build studio-dist",
