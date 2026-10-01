@@ -1,0 +1,12 @@
+---
+import ServicePage from '../../components/ServicePage.astro';
+import {getContent} from '../../lib/sanity/content';
+import type {Service} from '../../lib/sanity/types';
+export async function getStaticPaths() {
+ const {services} = await getContent();
+ return services.filter(s => !(s.category === 'xr' && s.slug === 'vr-development')).map(service => ({params:{category:service.category,slug:service.slug},props:{service}}));
+}
+interface Props {service: Service}
+const {service} = Astro.props;
+---
+<ServicePage service={service} />

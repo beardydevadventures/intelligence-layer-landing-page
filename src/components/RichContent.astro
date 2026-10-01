@@ -1,0 +1,7 @@
+---
+import {renderRichText} from '../lib/sanity/rich-text';
+import type {ContentBlock} from '../lib/sanity/types';
+interface Props {body: ContentBlock[]}
+const {body} = Astro.props;
+---
+<div class="rich-content" set:html={renderRichText(body)} />

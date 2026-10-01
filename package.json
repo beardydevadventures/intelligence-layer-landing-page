@@ -6,20 +6,53 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "typecheck": "astro check"
+    "deploy": "npm run build && wrangler deploy",
+    "typecheck": "astro check",
+    "cms:dev": "sanity dev",
+    "cms:build": "sanity build studio-dist",
+    "cms:deploy": "sanity deploy studio-dist --schema-required --yes",
+    "cms:seed": "tsx scripts/seed-sanity.ts",
+    "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "@lucide/astro": "^1.45.0",
+    "@portabletext/react": "^8.0.1",
+    "@portabletext/to-html": "^6.0.0",
+    "@sanity/astro": "^3.5.1",
+    "@sanity/client": "^8.9.0",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^7.0.0",
     "gsap": "^3.13.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sanity": "^6.17.0",
+    "styled-components": "^6.5.3",
     "tailwindcss": "^4.1.13",
     "three": "^0.180.0",
     "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@types/three": "^0.180.0"
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.180.0",
+    "tsx": "^4.23.15",
+    "wrangler": "^4.146.0"
+  },
+  "overrides": {
+    "@module-federation/dts-plugin": {
+      "adm-zip": "^0.6.1",
+      "undici": "^7.30.0"
+    },
+    "@vercel/frameworks": {
+      "js-yaml": "^3.15.2",
+      "smol-toml": "^1.9.0"
+    },
+    "typeid-js": {
+      "uuid": "^11.1.1"
+    }
   }
 }

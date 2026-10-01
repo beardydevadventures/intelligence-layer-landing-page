@@ -1,0 +1,19 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
+import VideoMedia from '../../components/VideoMedia.astro';
+import RichContent from '../../components/RichContent.astro';
+import RelatedContent from '../../components/RelatedContent.astro';
+import {getContent} from '../../lib/sanity/content';
+import {pageSeo,breadcrumbs} from '../../lib/sanity/seo';
+import {site} from '../../data/site';
+import type {CmsProject} from '../../lib/sanity/types';
+export async function getStaticPaths() {const {projects} = await getContent(); return projects.map(project => ({params:{slug:project.slug},props:{project}}));}
+interface Props {project: CmsProject}
+const {project} = Astro.props;
+const {settings} = await getContent();
+---
+<SiteLayout {...pageSeo(project.seo,settings,`${project.title} | ${settings.companyName}`,project.description,project.href)} schema={[breadcrumbs([{name:'Home',path:'/'},{name:'Work',path:'/work/'},{name:project.title,path:project.href}]), {'@type':'CreativeWork',name:project.title,description:project.description,url:`${site.url}${project.href}`,creator:{'@id':`${site.url}/#organisation`}, ...(project.image ? {image:project.image.src} : {})}]}>
+<main id="main" class="editorial-page"><section class="editorial-header"><p class="eyebrow"><a href="/work/">Selected work</a> / {project.category}</p><h1>{project.title}</h1><p class="lead">{project.headline}</p><p>{project.description}</p>{project.note && <p class="project-note">{project.note}</p>}<ul class="tags">{project.tags.map(tag => <li>{tag}</li>)}</ul></section>
+<section class="editorial-body" aria-label="Project details">{project.video ? <VideoMedia media={project.video} poster={project.poster} /> : project.image && <EditorialImage image={project.image} eager={true} sizes="(max-width: 900px) 100vw, 1000px" />}<RichContent body={project.body} />{project.gallery.map(image => <EditorialImage image={image} />)}{project.technologies.length > 0 && <><h2>Technologies and platforms</h2><p>{[...new Set([...project.technologies,...project.platform])].join(', ')}</p></>}{project.externalUrl && <p><a class="inline-link" href={project.externalUrl}>Explore {project.title} online</a></p>}<RelatedContent links={project.related} /></section><ContactSection /></main></SiteLayout>

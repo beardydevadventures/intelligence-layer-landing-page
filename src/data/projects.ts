@@ -1,5 +1,5 @@
 export interface ProjectMedia { src: string; alt: string; width: number; height: number }
-export interface ProjectVideo { src: string; type: string; title: string }
+export interface ProjectVideo { src: string; type: string; title: string; embedUrl?: string }
 export interface Project {
   slug: string; title: string; category: string; headline: string; description: string;
   tags: string[]; image?: ProjectMedia; video?: ProjectVideo; poster?: string;

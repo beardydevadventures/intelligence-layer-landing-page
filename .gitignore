@@ -3,3 +3,14 @@ dist/
 .astro/
 .sites-runtime/
 .DS_Store
+
+.env
+.env.*
+!.env.example
+!.env.production
+studio-dist/
+.sanity/
+cms-seed.ndjson
+.wrangler/
+.dev.vars
+.dev.vars.*

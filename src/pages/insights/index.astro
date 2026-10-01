@@ -1,0 +1,7 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
+import {getContent} from '../../lib/sanity/content';
+const {insights,settings} = await getContent();
+---
+<SiteLayout title={`AI & Immersive Technology Insights | ${settings.companyName}`} description="Practical perspectives on commissioning AI automation and immersive technology projects." noindex={insights.length === 0}><main id="main"><section class="outcomes listing-page"><p class="section-index">Insights</p><h1>Making emerging technology practical.</h1><div class="outcome-grid">{insights.map(insight => <article>{insight.coverImage && <EditorialImage image={insight.coverImage} />}<h2><a href={`/insights/${insight.slug}/`}>{insight.title}</a></h2><p>{insight.excerpt}</p><a class="inline-link" href={`/insights/${insight.slug}/`}>Read {insight.title}</a></article>)}</div>{insights.length === 0 && <p>Our first insights will be published here.</p>}</section></main></SiteLayout>

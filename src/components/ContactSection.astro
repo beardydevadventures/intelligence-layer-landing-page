@@ -1,1 +1,5 @@
-<section class="final-cta" id="contact" data-scene="final"><div class="cta-inner"><p class="section-index">Start a project</p><h2>Tell us what you're trying to build.</h2><p>Whether you're exploring AI automation, a VR experience, mixed reality, a digital twin or something that does not quite fit a category, we can help turn the idea into a practical next step.</p><a class="button button-light" href="mailto:connect@intelligencelayer.com.au">Start a conversation <span aria-hidden="true">&#8599;</span></a><a class="contact-email" href="mailto:connect@intelligencelayer.com.au">connect@intelligencelayer.com.au</a></div></section>
+---
+import {getContent} from '../lib/sanity/content';
+const {settings, homepage} = await getContent();
+---
+<section class="final-cta" id="contact" data-scene="final"><div class="cta-inner"><p class="section-index">Start a project</p><h2>{homepage.finalCtaHeading}</h2><p>{homepage.finalCtaCopy}</p><a class="button button-light" href={`mailto:${settings.contactEmail}`}>{settings.contactCta} <span aria-hidden="true">&#8599;</span></a><a class="contact-email" href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div></section>

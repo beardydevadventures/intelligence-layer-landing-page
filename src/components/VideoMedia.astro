@@ -1,0 +1,5 @@
+---
+interface Props { media: {src: string; type: string; title: string; embedUrl?: string}; poster?: string }
+const {media, poster} = Astro.props;
+---
+{media.embedUrl ? <div class="video-frame"><iframe src={media.embedUrl} title={media.title} loading="lazy" allow="fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div> : <video controls preload="none" poster={poster} width="1600" height="900" aria-label={media.title}><source src={media.src} type={media.type} /><a href={media.src}>Watch {media.title}</a></video>}

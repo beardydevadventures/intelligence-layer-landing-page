@@ -1,0 +1,6 @@
+---
+import type { EditorialImage } from '../lib/sanity/types';
+interface Props { image: EditorialImage; sizes?: string; eager?: boolean }
+const {image, sizes = '(max-width: 900px) 100vw, 50vw', eager = false} = Astro.props;
+---
+<figure class="editorial-image"><img src={image.src} srcset={image.srcset} sizes={sizes} alt={image.alt} width={image.width} height={image.height} loading={eager ? 'eager' : 'lazy'} decoding="async" />{image.caption && <figcaption>{image.caption}</figcaption>}</figure>

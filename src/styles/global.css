@@ -120,3 +120,29 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 @media (max-width:600px) { .platform-grid { grid-template-columns:1fr; } .hero h1 { font-size:clamp(2.8rem,10vw,3.7rem); } }
 @media (max-width:900px) { .scene-shell { z-index:0; opacity:.45; } }
 @media (max-width:600px) { .production-capabilities { grid-template-columns:1fr; } }
+/* Editorial content stays server-rendered; Studio is a separate application. */
+.project-link { display:inline-block; margin-top:1.5rem; font-size:.8rem; font-weight:650; border-bottom:1px solid var(--line); }
+.video-frame { aspect-ratio:16/9; width:100%; background:var(--ink); }
+.video-frame iframe { width:100%; height:100%; border:0; display:block; }
+.editorial-image { margin:2rem 0; }
+.editorial-image img,.rich-content img { display:block; width:100%; height:auto; }
+.editorial-image figcaption,.rich-content figcaption { color:var(--muted); font-size:.8rem; padding-top:.75rem; }
+.editorial-header { padding:10rem var(--pad) 4rem; max-width:1300px; margin:auto; }
+.editorial-header h1 { font-size:clamp(3rem,6vw,6rem); }
+.editorial-header>p { max-width:800px; }
+.editorial-body { padding:0 var(--pad) 6rem; max-width:1100px; margin:auto; }
+.editorial-body h2 { font-size:clamp(2.2rem,3.5vw,3.5rem); margin:3rem 0 1.5rem; }
+.rich-content h3 { font-size:2rem; margin:2rem 0 1rem; }
+.rich-content h4 { font-size:1.4rem; margin:1.5rem 0 1rem; }
+.rich-content p { line-height:1.8; }
+.rich-content a { text-decoration:underline; text-underline-offset:3px; }
+.rich-content blockquote,.content-callout { margin:2rem 0; padding:1.5rem; border-left:2px solid var(--blue); background:#edf0f4; }
+.rich-content video,.editorial-body video { max-width:100%; height:auto; }
+.related-content { margin:4rem 0 0; padding-top:2rem; border-top:1px solid var(--line); }
+.related-content h2 { font-size:2rem; }
+.related-content li { padding:.5rem 0; }
+.listing-page { padding-top:10rem; min-height:80vh; }
+.listing-page>h1 { margin-bottom:4rem; font-size:clamp(3rem,6vw,6rem); }
+.listing-page .outcome-grid h2 { font-size:2rem; line-height:1.1; }
+.social-links { display:flex; flex-wrap:wrap; gap:2rem; padding:1.5rem var(--pad); background:var(--navy); color:white; }
+.project-note { color:var(--muted); font-size:.85rem; }

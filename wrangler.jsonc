@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "intelligence-layer-landing-page",
+  "account_id": "d5eeefc11e6de7bfa5fa901e8205fb49",
+  "compatibility_date": "2026-09-10",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "force-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

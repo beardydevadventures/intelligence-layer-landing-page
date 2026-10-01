@@ -1,4 +1,4 @@
-﻿# Commercial site implementation
+# Commercial site implementation
 
 ## Audit and homepage
 The original homepage gave cybersecurity, automation, digital solutions and spatial computing equal prominence. Products preceded work, selected work was a coming-soon placeholder, and metadata was limited to a homepage title and description.
@@ -34,3 +34,20 @@ Portfolio entries must reflect Intelligence Layer involvement in conception, dir
 Provide genuine Diamond Easy, AI Digital Twin and Brisbane 2032 Digital Twin captures or videos, with descriptive alt text and video posters. Add image `{ src, alt, width, height }` or video `{ src, type, title }` fields in `src/data/projects.ts`; cards automatically render them. No fabricated project artwork or screenshots were added. Existing product mock-ups are preserved.
 
 Future work/service/insight routes are intentionally deferred. The AI CTA currently opens an email enquiry; switch it to `/ai/ai-automation/` when that page is published. For new routes, use SiteLayout and shared project data, extend the sitemap and provide page-specific schema. Project pages can add CreativeWork/Article and BreadcrumbList; add VideoObject only when genuine video metadata exists. No FoVR changes were made.
+
+
+## Sanity CMS implementation
+
+Sanity Studio is configured as a separate app for project `gr23tee8`, initially targeting the `production` dataset. Public Astro pages stay static. The official Astro integration shares configuration with the typed build-time content layer in `src/lib/sanity/`. Queries, normalisation, responsive image transforms, safe Portable Text rendering and SEO helpers are organised there.
+
+Editable content includes singleton Site Settings and Homepage, structured Services, Projects, Insights, FAQ objects and an optional Testimonial schema. Developers retain layouts, headings, route patterns, animation, structured data and technical SEO. Optional client/collaborator approval fields do not automatically expose names; the public queries omit those fields. Testimonials are not displayed.
+
+Homepage, contact, shared layout, project cards and the VR route now use normalised CMS content. Shared service templates support future `/ai/{slug}/` and `/xr/{slug}/` routes from published documents. `/work/`, `/work/{slug}/`, `/insights/` and `/insights/{slug}/` are generated from published content. Sitemaps honour indexing controls and canonical overrides; project/article pages emit CreativeWork/Article and breadcrumbs. Related references generate useful internal links and reject unavailable targets.
+
+Studio includes an authenticated draft-content review view, media selection, validation and publishing. It does not provide full-page Presentation overlays; those remain deferred until an appropriate server preview deployment exists. The public site and Studio build independently, and no Studio/React editor runtime is added to public page rendering.
+
+`npm run cms:seed` creates an ignored six-document NDJSON migration export from approved existing content. A completely empty dataset retains approved baseline site content until migration. Once CMS documents exist, published project lists are authoritative. Fetch failures stop deployment builds; individual malformed fields are normalised or rejected. CMS drafts and release versions do not become public pages.
+
+Validation: content safeguards have dedicated automated tests; public-site build, Studio build and Studio schema validation were exercised. The real GROQ query succeeds against the supplied production dataset, which has now been seeded with the six approved documents. Compatible scoped CLI dependency patches leave the npm audit clean. Browser UI checks, actual draft-save/publish verification and live media upload checks require an authenticated editor environment.
+
+Activation completed: authenticated the Sanity CLI, imported the six-document seed using `--missing`, and deployed Studio at https://intelligence-layer.sanity.studio/. The deployment ID is persisted for future updates, and Studio builds deploy from `studio-dist` separately from public `dist`. All six imported documents validate without warnings, and authenticated draft isolation is checked without publishing test content. The public host is the existing Cloudflare Worker intelligence-layer-landing-page in the business account. Static asset deployment configuration is prepared and passes a Wrangler dry run. The Sanity production publishing webhook is connected to the dashboard-created Workers Builds hook. A same-value homepage update verified HTTP 200 delivery, with drafts and release versions excluded. Public production project/dataset identifiers are committed in .env.production; all secret URLs and tokens remain ignored. The CLI lacks Workers CI access, so dashboard build logs are needed to verify cloud builds. See `README.md` for editor access, environment names, preview, publishing, content creation and SEO guidance.

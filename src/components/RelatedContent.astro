@@ -1,0 +1,6 @@
+---
+import type { RelatedLink } from '../lib/sanity/types';
+interface Props {links: RelatedLink[]}
+const {links} = Astro.props;
+---
+{links.length > 0 && <aside class="related-content" aria-labelledby="related-heading"><h2 id="related-heading">Explore related work and insights</h2><ul>{links.map(link => <li><a class="inline-link" href={link.href}>{link.title}</a></li>)}</ul></aside>}

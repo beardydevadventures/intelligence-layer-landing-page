@@ -1,0 +1,18 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
+import RichContent from '../../components/RichContent.astro';
+import RelatedContent from '../../components/RelatedContent.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import {getContent} from '../../lib/sanity/content';
+import {pageSeo,breadcrumbs} from '../../lib/sanity/seo';
+import {site} from '../../data/site';
+import type {Insight} from '../../lib/sanity/types';
+export async function getStaticPaths() {const {insights} = await getContent(); return insights.map(insight => ({params:{slug:insight.slug},props:{insight}}));}
+interface Props {insight: Insight}
+const {insight} = Astro.props;
+const {settings} = await getContent();
+const path = `/insights/${insight.slug}/`;
+---
+<SiteLayout {...pageSeo(insight.seo,settings,`${insight.title} | ${settings.companyName}`,insight.excerpt,path)} article={true} schema={[breadcrumbs([{name:'Home',path:'/'},{name:'Insights',path:'/insights/'},{name:insight.title,path}]), {'@type':'Article',headline:insight.title,description:insight.excerpt,url:`${site.url}${path}`,mainEntityOfPage:`${site.url}${path}`,author:{'@type':insight.author === settings.companyName ? 'Organization' : 'Person',name:insight.author},publisher:{'@id':`${site.url}/#organisation`}, ...(insight.publishedAt ? {datePublished:insight.publishedAt} : {}), ...(insight.updatedAt ? {dateModified:insight.updatedAt} : {}), ...(insight.coverImage ? {image:insight.coverImage.src} : {})}]}>
+<main id="main" class="editorial-page"><article><header class="editorial-header"><p class="eyebrow"><a href="/insights/">Insights</a>{insight.category && ` / ${insight.category}`}</p><h1>{insight.title}</h1><p class="lead">{insight.excerpt}</p><p>By {insight.author}{insight.publishedAt && <> &middot; <time datetime={insight.publishedAt}>{new Intl.DateTimeFormat('en-AU',{dateStyle:'long',timeZone:'Australia/Brisbane'}).format(new Date(insight.publishedAt))}</time></>}</p></header><div class="editorial-body">{insight.coverImage && <EditorialImage image={insight.coverImage} eager={true} sizes="(max-width: 900px) 100vw, 1000px" />}<RichContent body={insight.body} /><RelatedContent links={insight.related} /></div></article><ContactSection /></main></SiteLayout>

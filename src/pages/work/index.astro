@@ -1,0 +1,8 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import {getContent} from '../../lib/sanity/content';
+const {projects,settings} = await getContent();
+---
+<SiteLayout title={`Selected AI & XR Work | ${settings.companyName}`} description="Explore Intelligence Layer projects in virtual reality, conversational AI and spatial computing."><main id="main"><section class="work listing-page"><p class="section-index">Selected work</p><h1>Ideas made interactive.</h1><div class="project-grid">{projects.map(project => <ProjectCard project={project} />)}</div>{projects.length === 0 && <p>Talk to us about the experience or system you want to build.</p>}</section><ContactSection /></main></SiteLayout>
