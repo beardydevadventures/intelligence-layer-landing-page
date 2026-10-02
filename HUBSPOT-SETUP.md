@@ -17,7 +17,7 @@ No private API key is required by the browser submission adapter. Do not add a H
 
 ## Configuration after owner review
 
-Use a dedicated website enquiry form that accepts contact properties `firstname`, `lastname`, `company`, `email`, optional `phone`, and `message`. First name, company and email are collected as required fields. Last name is omitted for a single-word name. Service, problem, budget, timeline and preferred contact method are combined in `message`. Check the actual form's required fields against this mapping before enabling it.
+Matthew confirmed on 3 October 2026 that this must reuse the **Cybersecurity Check** form. Its sibling repository has embed support, but no configured portal/form IDs in its local files; its deployment reads GitHub variables. Obtain the live form URL/embed or approved deployment variables. Do not create a replacement form. Check compatibility before enabling: the reused form must accept contact properties `firstname`, `lastname`, `company`, `email`, optional `phone`, and `message`. First name, company and email are collected as required fields. Last name is omitted for a single-word name. Service, problem, budget, timeline and preferred contact method are combined in `message`. Check the actual form's required fields against this mapping before enabling it.
 
 Set `PUBLIC_HUBSPOT_PORTAL_ID` and `PUBLIC_HUBSPOT_FORM_ID` in an ignored local/staging environment first. The identifiers are public configuration; no secret is exposed. Verify origin/CORS behaviour in a browser. Configure the actual recipients and CRM routing in HubSpot only when the permitted reversible configuration is understood. Irreversible production configuration changes and site deployment remain prohibited.
 
