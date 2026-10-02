@@ -17,3 +17,7 @@ Limitation: browser inventory has no browser, so Studio interaction and frontend
 Inspected the full Jira acceptance criteria and existing submission adapter. No mock success path is used in the website; tests alone use stub responses. Local production-mode configuration inspection confirms both portal/form identifiers are absent, and HubSpot remains unconnected. Existing validation, pending state, accepted-response success, retained-input error behaviour and email fallback remain intact. The three focused enquiry tests pass.
 
 Added `HUBSPOT-SETUP.md` with exact field mapping, owner inputs, safe environment setup and CRM/notification evidence requirements. Actual configuration, lead receipt and notification verification are blocked on external input. ILW-43 remains open; no test lead, production change or deployment was made.
+
+## ILW-44 — focused QA
+
+Added `QA-PHASE-1.md` with executed static/source coverage and an explicit untested browser/device matrix. Fixed listing card heading levels, no-JavaScript mobile header flow and misleading live-update wording on illustrative venture mockups. Expanded generated-page checks for language/landmarks, accessible form labels, iframe titles and positive tabindex. The 21 tests, production build and all 16 generated-page checks pass; diff checks pass. Actual browser/device, keyboard/screen-reader, WebGL/reduced-motion and Lighthouse measurements remain unavailable. ILW-44 stays In Progress; no cross-browser or measured performance claim is made.

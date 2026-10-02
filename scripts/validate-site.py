@@ -22,10 +22,20 @@ class Page(HTMLParser):
         self.json_buffer = ''
         self.schemas = []
         self.errors = []
+        self.main_count = 0
+        self.lang = ''
+        self.label_depth = 0
         self.feed(source)
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if tag == 'html': self.lang = a.get('lang', '')
+        if tag == 'main': self.main_count += 1
+        if tag == 'label': self.label_depth += 1
+        if tag in ['input', 'select', 'textarea'] and a.get('type') not in ['hidden','submit','button']:
+            if not self.label_depth and not a.get('aria-label') and not a.get('aria-labelledby'): self.errors.append('Form control missing accessible label')
+        if a.get('tabindex', '').isdigit() and int(a['tabindex']) > 0: self.errors.append('Positive tabindex disrupts focus order')
+        if tag == 'iframe' and not a.get('title'): self.errors.append('Frame missing accessible title')
         if tag == 'h1': self.h1 += 1
         if 'id' in a: self.ids.append(a['id'])
         if tag == 'a' and a.get('href'): self.links.append(a['href'])
@@ -41,6 +51,7 @@ class Page(HTMLParser):
         if self.capture == 'json': self.json_buffer += data
 
     def handle_endtag(self, tag):
+        if tag == 'label': self.label_depth -= 1
         if tag == 'script' and self.capture == 'json': self.schemas.append(json.loads(self.json_buffer)); self.capture = ''
         if tag == 'title': self.capture = ''
 
@@ -56,6 +67,8 @@ for route, page in pages.items():
     def check(condition, message):
         if not condition: errors.append(f'{route}: {message}')
     check(page.h1 == 1, f'Expected one H1, found {page.h1}')
+    check(page.main_count == 1, 'Expected one main landmark')
+    check(bool(page.lang), 'Missing document language')
     check(page.title and page.title not in titles, 'Missing or duplicated title')
     titles.add(page.title)
     check(bool(page.metas.get('description')), 'Missing description')
@@ -88,4 +101,4 @@ for route, page in pages.items():
 assert 'Sitemap: ' + DOMAIN + '/sitemap.xml' in (ROOT / 'robots.txt').read_text()
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'Validated {len(pages)} HTML pages: H1s, metadata, JSON-LD, local links/assets, anchors and sitemap indexing.')
+print(f'Validated {len(pages)} HTML pages: headings/landmarks, form labels, metadata, JSON-LD, local links/assets, anchors and sitemap indexing.')

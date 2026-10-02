@@ -69,7 +69,7 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 .project-card { background:white; border:1px solid var(--line); min-width:0; }
 .project-card img,.project-card video { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; background:var(--ink); }
 .project-copy { padding:clamp(1.4rem,2.5vw,2.5rem); }
-.project-copy h3 { font-size:clamp(2rem,2.6vw,3rem); margin-bottom:1.5rem; }
+.project-copy :is(h2,h3) { font-size:clamp(2rem,2.6vw,3rem); margin-bottom:1.5rem; }
 .project-copy .eyebrow { font-size:.65rem; color:var(--blue); }
 .project-copy p:not(.eyebrow) { color:var(--muted); }
 .project-copy .project-headline { font-weight:650; color:var(--ink)!important; }
@@ -198,3 +198,5 @@ form button:disabled { opacity:.55; cursor:not-allowed; }
 .site-header { background:rgba(247,248,250,.96); }
 
 .marketing-heading { white-space:pre-line; }
+
+@media(max-width:900px) { html:not(.js-navigation) .site-header { position:relative; } }
