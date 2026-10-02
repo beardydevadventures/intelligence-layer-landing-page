@@ -151,3 +151,15 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 .listing-page .outcome-grid h2 { font-size:2rem; line-height:1.1; }
 .social-links { display:flex; flex-wrap:wrap; gap:2rem; padding:1.5rem var(--pad); background:var(--navy); color:white; }
 .project-note { color:var(--muted); font-size:.85rem; }
+
+.scene-fallback img { width:min(80%,370px); height:auto; }
+
+/* The animated mark belongs to the banner and scrolls with it. */
+.hero { position:relative; isolation:isolate; overflow:hidden; }
+.hero > .scene-shell { position:absolute; top:0; right:0; width:48%; height:100%; z-index:0; }
+.hero > .content { position:relative; z-index:1; }
+.hero > .hero-note { position:absolute; z-index:1; }
+@media (max-width:900px) {
+  .hero { padding-bottom:calc(36svh + 3rem); }
+  .hero > .scene-shell { top:auto; bottom:1.5rem; width:100%; height:36svh; opacity:1; }
+}

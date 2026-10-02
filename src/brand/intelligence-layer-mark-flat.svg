@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="115 79 370 410" role="img" aria-labelledby="title desc">
+  <title id="title">Intelligence Layer mark</title>
+  <desc id="desc">Flat vector version of the Intelligence Layer mark.</desc>
+  <g id="layers" fill="#1559ED" fill-opacity="0.22" stroke="#1559ED" stroke-width="8"
+     stroke-linejoin="round" vector-effect="non-scaling-stroke">
+    <polygon points="300,284 472,380 300,476 128,380"/>
+    <polygon points="300,188 472,284 300,380 128,284"/>
+    <polygon points="300,92 472,188 300,284 128,188"/>
+  </g>
+  <g id="connectors" fill="none" stroke="#1559ED" stroke-width="7"
+     stroke-linecap="round" vector-effect="non-scaling-stroke">
+    <line x1="128" y1="188" x2="128" y2="380"/><line x1="472" y1="188" x2="472" y2="380"/><line x1="300" y1="92" x2="300" y2="188"/><line x1="300" y1="284" x2="300" y2="476"/>
+  </g>
+  <g id="nodes" fill="#1559ED">
+    <circle cx="300" cy="92" r="9"/><circle cx="128" cy="188" r="9"/><circle cx="472" cy="188" r="9"/><circle cx="300" cy="188" r="9"/><circle cx="300" cy="284" r="9"/><circle cx="128" cy="284" r="9"/><circle cx="472" cy="284" r="9"/><circle cx="300" cy="380" r="9"/><circle cx="128" cy="380" r="9"/><circle cx="472" cy="380" r="9"/><circle cx="300" cy="476" r="9"/>
+  </g>
+</svg>

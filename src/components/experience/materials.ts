@@ -1,10 +1,8 @@
 import * as THREE from 'three';
 
-export function updateLayerMaterials(layers: THREE.Mesh[], colour: string) {
-  const target = new THREE.Color(colour);
-  layers.forEach((layer, index) => {
-    const material = layer.material as THREE.MeshPhysicalMaterial;
-    material.color.lerp(target, 0.08);
-    material.emissive.copy(target).multiplyScalar(index === 0 ? 0.05 : 0.015);
-  });
+export function updateMarkMaterials(mark: { plateMaterial: THREE.MeshPhysicalMaterial; edgeMaterial: THREE.MeshStandardMaterial; nodeMaterial: THREE.MeshStandardMaterial }, colour: string, t: number) {
+  mark.plateMaterial.color.lerp(new THREE.Color(colour), 0.08);
+  const pulse = 0.85 + Math.sin(t * 1.2) * 0.08;
+  mark.nodeMaterial.emissiveIntensity = pulse;
+  mark.edgeMaterial.emissiveIntensity = pulse * 0.8;
 }
