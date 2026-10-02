@@ -1,3 +1,5 @@
+> Current Phase 1 release boundary: the continuation is preparation only. Historical production setup below is not permission to deploy or publish. See [release checklist](RELEASE-CHECKLIST.md), [Guy's editing handover](CMS-HANDOVER.md), [HubSpot setup](HUBSPOT-SETUP.md) and [measurement setup](MEASUREMENT.md) for current evidence and pending acceptance.
+
 # Intelligence Layer
 
 Astro static website for AI automation and immersive technology. Page layout, routing, semantic HTML, animation and SEO generation stay in code; editable marketing and editorial content lives in Sanity.
@@ -63,7 +65,7 @@ npm run cms:deploy
 npm run build
 ```
 
-`cms:seed` only exports the existing approved copy to an ignored NDJSON file. Import with `--missing` so existing document IDs are preserved. It includes Site Settings, Homepage, VR Development and the three approved project summaries. It does not create invented articles, testimonials, metrics, client names, collaborators or future service pages.
+`cms:seed` only exports the existing approved copy to an ignored NDJSON file. Import with `--missing` so existing document IDs are preserved. It exports twelve documents: Site Settings, Homepage, Industries/process/About, Page headings & enquiry copy, five services including VR Development, and the three approved project summaries. Nothing is imported by this command. It does not create invented articles, testimonials, metrics, client names, collaborators or future service pages.
 
 ### Drafts and preview
 
@@ -77,7 +79,7 @@ Editors save drafts automatically and use Studio's **Publish** action. Published
 
 - Dataset: `production`.
 - Trigger: create, update and delete.
-- Filter: `_type in ["siteSettings", "homepage", "service", "project", "insight"] && !(_id in path("drafts.**")) && !(_id in path("versions.**"))`.
+- Filter: `_type in ["siteSettings", "homepage", "commercialContent", "marketingCopy", "service", "project", "insight"] && !(_id in path("drafts.**")) && !(_id in path("versions.**"))`.
 - Payload projection: `{ "_id": _id, "_type": _type }`.
 - Draft events: disabled. Do not trigger rebuilds while typing drafts.
 - Destination: the actual host's build-hook URL; keep it out of Git and CMS content. Use webhook signing if the host/receiver supports it. With a custom receiver, verify the signature before accepting requests.
