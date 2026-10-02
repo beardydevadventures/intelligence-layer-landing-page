@@ -12,7 +12,8 @@
     "cms:build": "sanity build studio-dist",
     "cms:deploy": "sanity deploy studio-dist --schema-required --yes",
     "cms:seed": "tsx scripts/seed-sanity.ts",
-    "test": "tsx --test tests/*.test.ts"
+    "test": "tsx --test tests/*.test.ts",
+    "validate:site": "python scripts/validate-site.py"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

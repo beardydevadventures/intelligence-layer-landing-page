@@ -9,26 +9,35 @@ interface Props { title: string; description: string; schema?: Record<string, un
 const {title, description, schema = [], noindex = false, canonical = new URL(Astro.url.pathname, site.url).href, ogTitle = title, ogDescription = description, article = false} = Astro.props;
 const {settings, insights} = await getContent();
 const ogImage = Astro.props.ogImage || settings.defaultOgImage;
+const fallbackImage = {src:`${site.url}/brand/intelligence-layer-mark.png`,alt:'Intelligence Layer',width:256,height:265};
+const socialImage = ogImage || fallbackImage;
+const verification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 const graph = [{...organisation, name:settings.companyName, email:settings.contactEmail, sameAs:settings.socialLinks.map(link => link.url)}, ...schema];
 ---
 <!doctype html>
 <html lang="en-AU"><head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
 <title>{title}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
+{verification && <meta name="google-site-verification" content={verification} />}
 <meta name="theme-color" content="#f7f8fa" /><link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" /><link rel="icon" type="image/svg+xml" href="/brand/intelligence-layer-mark-flat.svg" />
 <meta property="og:type" content={article ? 'article' : 'website'} /><meta property="og:site_name" content={settings.companyName} /><meta property="og:locale" content="en_AU" /><meta property="og:title" content={ogTitle} /><meta property="og:description" content={ogDescription} /><meta property="og:url" content={canonical} />
-{ogImage && <><meta property="og:image" content={ogImage.src} /><meta property="og:image:alt" content={ogImage.alt} /><meta property="og:image:width" content={String(Math.min(ogImage.width,1600))} /></>}
-<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />{ogImage && <meta name="twitter:image" content={ogImage.src} />}<meta name="twitter:title" content={ogTitle} /><meta name="twitter:description" content={ogDescription} />
+{socialImage && <><meta property="og:image" content={socialImage.src} /><meta property="og:image:alt" content={socialImage.alt} /><meta property="og:image:width" content={String(Math.min(socialImage.width,1600))} /><meta property="og:image:height" content={String(Math.round(socialImage.height * Math.min(socialImage.width,1600) / socialImage.width))} /></>}
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />{socialImage && <meta name="twitter:image" content={socialImage.src} />}<meta name="twitter:title" content={ogTitle} /><meta name="twitter:description" content={ogDescription} />
 {noindex && <meta name="robots" content="noindex" />}
 <script is:inline type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\u003c')} />
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header" data-header><Logo /><button class="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="Open navigation"><span>Menu</span><i></i></button><nav id="navigation" aria-label="Primary navigation"><a href="/services/">Services</a><a href="/industries/">Industries</a><a href="/work/">Work</a><a href="/about/">About</a>{insights.length > 0 && <a href="/insights/">Insights</a>}<a class="nav-contact" href="/start-a-project/">Start a project <span aria-hidden="true">?</span></a></nav></header>
+<header class="site-header" data-header><Logo /><button class="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="Open navigation"><span>Menu</span><i></i></button><nav id="navigation" aria-label="Primary navigation"><a href="/services/">Services</a><a href="/industries/">Industries</a><a href="/work/">Work</a><a href="/about/">About</a>{insights.length > 0 && <a href="/insights/">Insights</a>}<a class="nav-contact" href="/start-a-project/">Start a project <span aria-hidden="true">&#8599;</span></a></nav></header>
 <slot />
 {settings.socialLinks.length > 0 && <div class="social-links" aria-label="Social links">{settings.socialLinks.map(link => <a href={link.url}>{link.label}</a>)}</div>}
 <div class="footer-navigation" role="navigation" aria-label="Footer navigation"><a href="/services/">Services</a><a href="/industries/">Industries</a><a href="/work/">Work</a><a href="/about/">About</a><a href="/start-a-project/">Start a project</a><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div><footer><Logo compact={true} /><p>AI automation &middot; Immersive technology</p><p>&copy; {new Date().getFullYear()} {settings.companyName} &middot; {settings.locationDescription}</p></footer>
 <script>
 document.documentElement.classList.add('js-navigation');
+document.addEventListener('click',event=>{
+ const anchor=(event.target as Element)?.closest<HTMLAnchorElement>('a[href]');
+ if (!anchor || new URL(anchor.href).origin !== location.origin || new URL(anchor.href).pathname !== '/start-a-project/') return;
+ window.dispatchEvent(new CustomEvent('intelligence-layer:conversion',{detail:{event:'start_project_click',path:location.pathname}}));
+});
 const header = document.querySelector('[data-header]');
 const menu = document.querySelector<HTMLButtonElement>('.menu-button');
 const nav = document.querySelector<HTMLElement>('#navigation');
