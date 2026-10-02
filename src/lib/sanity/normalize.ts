@@ -3,6 +3,7 @@ import { projects as baselineProjects } from '../../data/projects';
 import { contactEmail, editorialImage, isoDate, items, list, portableText, record, relatedLinks, safeUrl, seo, slug, strings, text, video } from './helpers';
 import type { CmsProject, Homepage, Insight, Service, Settings, SiteContent } from './types';
 import {coreServices, industries, processSteps, aboutCopy} from '../../data/commercial';
+import {defaultMarketingCopy,marketingKeys} from '../../data/marketing';
 const published = (value: unknown) => !text(record(value)._id).startsWith('drafts.') && !text(record(value)._id).startsWith('versions.');
 export function normalizeContent(value: unknown, configured = false): SiteContent {
  const raw = record(value), rawSettings = record(raw.settings), rawHome = record(raw.homepage);
@@ -60,6 +61,8 @@ export function normalizeContent(value: unknown, configured = false): SiteConten
   about:{title:text(rawCommercial.aboutTitle,aboutCopy.title),introduction:text(rawCommercial.aboutIntroduction,aboutCopy.introduction),delivery:text(rawCommercial.aboutDelivery,aboutCopy.delivery),evidence:text(rawCommercial.aboutEvidence,aboutCopy.evidence)},
   team:Array.isArray(rawCommercial.team) ? list(rawCommercial.team).map(record).filter(r=>r.approvedForPublication === true).map(r=>({name:text(r.name),role:text(r.role),biography:text(r.biography),image:editorialImage(r.image)})).filter(r=>r.name) : [{name:'Matthew Aisthorpe',role:'',biography:''},{name:'Guy',role:'',biography:''}],
  };
- return {settings, homepage, projects, services, insights, commercial};
+ const rawMarketing=record(raw.marketing), marketing={...defaultMarketingCopy};
+ for(const key of marketingKeys) marketing[key]=text(rawMarketing[key],defaultMarketingCopy[key]);
+ return {settings, homepage, projects, services, insights, commercial, marketing};
 }
 

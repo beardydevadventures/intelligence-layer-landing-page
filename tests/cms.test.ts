@@ -5,6 +5,7 @@ import {editorialImage,portableText,safeUrl,video} from '../src/lib/sanity/helpe
 import {renderRichText} from '../src/lib/sanity/rich-text';
 import {pageSeo} from '../src/lib/sanity/seo';
 import {siteQuery} from '../src/lib/sanity/queries';
+import {defaultMarketingCopy,marketingKeys} from '../src/data/marketing';
 const project = {_id:'project-one',_type:'project',slug:'one',title:'Real project',shortDescription:'Approved involvement.',featured:true,platforms:['Meta Quest']};
 const image = {alt:'Spatial crafting interface',caption:'Real project capture',asset:{url:'https://cdn.sanity.io/images/gr23tee8/production/example-1600x900.png',metadata:{dimensions:{width:1600,height:900}}}};
 const paragraph = {_type:'block',_key:'p',style:'normal',children:[{_type:'span',_key:'s',text:'Useful article content',marks:[]}],markDefs:[]};
@@ -69,4 +70,14 @@ test('commercial edits are published-only, validated and respect explicit team r
 });
 test('all v1 commercial routes can be used by the editable primary CTA',()=>{
  for(const route of ['/services/','/industries/','/about/','/start-a-project/']) assert.equal(normalizeContent({homepage:{primaryCtaDestination:route}},true).homepage.primaryCtaDestination,route);
+});
+test('existing documents and malformed marketing copy retain sensible defaults',()=>{
+ const result=normalizeContent({marketing:{enquiryHeading:null,homepageServicesHeading:{bad:true},serviceCtaLabel:'',enquiryIntroduction:42}},true);
+ assert.deepEqual(result.marketing,defaultMarketingCopy);assert.equal(result.services.length,5);
+});
+test('every editable marketing field is projected and accepts a nonempty editor override',()=>{
+ const overrides=Object.fromEntries(marketingKeys.map(key=>[key,`Edited ${key}`]));
+ const result=normalizeContent({marketing:overrides},true);
+ assert.deepEqual(result.marketing,overrides);
+ for(const key of marketingKeys) assert.ok(siteQuery.includes(key));
 });

@@ -196,3 +196,5 @@ form button:disabled { opacity:.55; cursor:not-allowed; }
 }
 
 .site-header { background:rgba(247,248,250,.96); }
+
+.marketing-heading { white-space:pre-line; }

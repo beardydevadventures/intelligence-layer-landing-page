@@ -4,6 +4,7 @@ import { PortableText } from '@portabletext/react';
 import type { PortableTextBlock } from '@portabletext/types';
 import { editorialImage, items, list, portableText, record, routeFor, safeUrl, text } from '../src/lib/sanity/helpers';
 import type { EditorialImage } from '../src/lib/sanity/types';
+import {defaultMarketingCopy,marketingKeys,marketingTitle} from '../src/data/marketing';
 interface Props {document: {displayed: Record<string, unknown> | null}}
 export function ContentPreview({document}: Props) {
  const doc = record(document.displayed), client = useClient({apiVersion: '2026-10-01'});
@@ -24,13 +25,14 @@ export function ContentPreview({document}: Props) {
  };
  const resolved = record(withAssets(doc));
  const title = text(doc.aboutTitle,text(doc.heroHeading, text(doc.headline, text(doc.title, text(doc.companyName, 'Draft content')))));
- const publicPath = doc._type === 'commercialContent' ? '/about/' : doc._type === 'homepage' || doc._type === 'siteSettings' ? '/' : routeFor({...doc, slug: record(doc.slug).current});
+ const publicPath = doc._type === 'marketingCopy' ? '/' : doc._type === 'commercialContent' ? '/about/' : doc._type === 'homepage' || doc._type === 'siteSettings' ? '/' : routeFor({...doc, slug: record(doc.slug).current});
  const publicUrl = safeUrl(`${process.env.SANITY_STUDIO_PUBLIC_SITE_URL || 'https://intelligencelayer.com.au'}${publicPath}`);
  const renderImage = (image?: EditorialImage) => image && <figure><img src={image.src} alt={image.alt} style={{width:'100%',height:'auto'}} />{image.caption && <figcaption>{image.caption}</figcaption>}</figure>;
  return <div style={{background:'#f7f8fa',color:'#071126',padding:'2rem',fontFamily:'Arial,sans-serif',lineHeight:1.6,maxWidth:900,margin:'auto'}}>
   <p style={{fontSize:13,color:'#5d6678'}}>Draft content preview. Changes here are not public until published and the website rebuild completes. This checks content, not the full website layout.</p>
   {publicPath && <a href={publicUrl} target="_blank" rel="noreferrer">Open published page</a>}
   <h1 style={{lineHeight:1.05,fontSize:42,letterSpacing:'-.04em'}}>{title}</h1>
+  {doc._type === 'marketingCopy' && marketingKeys.map(key=><section key={key}><h2>{marketingTitle(key)}</h2><p>{text(doc[key],defaultMarketingCopy[key])}</p></section>)}
   <p>{text(doc.heroIntroduction, text(doc.introduction, text(doc.shortDescription, text(doc.excerpt))))}</p>
   {renderImage(editorialImage(resolved.coverImage))}
   {doc._type === 'homepage' && <>

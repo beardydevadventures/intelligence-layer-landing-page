@@ -2,10 +2,12 @@ import {writeFile} from 'node:fs/promises';
 import {defaultHomepage, defaultSettings, defaultVrService} from '../src/lib/sanity/defaults';
 import {projects} from '../src/data/projects';
 import {coreServices,industries,processSteps,aboutCopy} from '../src/data/commercial';
+import {defaultMarketingCopy} from '../src/data/marketing';
 const array = <T extends object>(values: T[], type: string) => values.map((v,i) => ({_type:type, _key:`item-${i}`, ...v}));
 const references = (ids: string[]) => ids.map((id,i) => ({_type:'reference', _key:`ref-${i}`, _ref:id}));
 const {id: serviceId, ...vrFields} = defaultVrService;
 const documents = [
+ {_id:'marketingCopy',_type:'marketingCopy',...defaultMarketingCopy},
  {_id:'commercialContent',_type:'commercialContent',industries:array(industries,'industry'),processSteps:array(processSteps,'contentItem'),aboutTitle:aboutCopy.title,aboutIntroduction:aboutCopy.introduction,aboutDelivery:aboutCopy.delivery,aboutEvidence:aboutCopy.evidence,team:array([{name:'Matthew Aisthorpe',approvedForPublication:true},{name:'Guy',approvedForPublication:true}],'teamMember')},
  ...coreServices.map(({id,...service})=>({_id:id,_type:'service',...service,slug:{_type:'slug',current:service.slug},useCases:array(service.useCases,'contentItem'),capabilities:array(service.capabilities,'contentItem'),faqs:array(service.faqs,'faq')})),
  {_id:'siteSettings', _type:'siteSettings', ...defaultSettings},
