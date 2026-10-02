@@ -61,5 +61,12 @@ test('image crops retain correct dimensions and broken destinations fall back sa
  const result=normalizeContent({homepage:{primaryCtaDestination:'/missing/'}},true); assert.equal(result.homepage.primaryCtaDestination,'#contact');
 });
 test('incomplete new service documents cannot create empty landing pages', () => {
- const result=normalizeContent({services:[{slug:'ai-agents',category:'ai',title:'AI Agents',introduction:null,shortDescription:[]}]},true); assert.deepEqual(result.services.map(s=>s.slug),['vr-development']);
+ const result=normalizeContent({services:[{slug:'ai-agents',category:'ai',title:'AI Agents',introduction:null,shortDescription:[]}]},true); assert.ok(!result.services.some(s=>s.slug==='ai-agents')); assert.equal(result.services.length,5);
+});
+test('commercial edits are published-only, validated and respect explicit team removal',()=>{
+ const result=normalizeContent({commercial:{industries:[{title:'Mining',description:'Sector-specific copy',services:['digital-twins','missing']}],team:[{name:'Approved person',approvedForPublication:true,role:'Approved role'},{name:'Private person',approvedForPublication:false}],aboutTitle:'An edited About heading',processSteps:[{title:'Only one',description:'Incomplete'}]}},true);
+ assert.equal(result.commercial.about.title,'An edited About heading');assert.equal(result.commercial.processSteps.length,6);assert.deepEqual(result.commercial.industries[0].services,['digital-twins']);assert.equal(result.commercial.team.length,1);assert.doesNotMatch(JSON.stringify(result.commercial),/Private person/);assert.equal(normalizeContent({commercial:{team:[]}},true).commercial.team.length,0);
+});
+test('all v1 commercial routes can be used by the editable primary CTA',()=>{
+ for(const route of ['/services/','/industries/','/about/','/start-a-project/']) assert.equal(normalizeContent({homepage:{primaryCtaDestination:route}},true).homepage.primaryCtaDestination,route);
 });

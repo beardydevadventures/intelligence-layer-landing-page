@@ -49,11 +49,17 @@ export function normalizeContent(value: unknown, configured = false): SiteConten
   return [{id: text(r._id), slug: s, title, excerpt, body, coverImage: editorialImage(r.coverImage), author: text(r.author, settings.companyName), publishedAt: isoDate(r.publishedAt), updatedAt: isoDate(r.updatedAt), category: text(r.category) || undefined, related: relatedLinks(r.related), seo: seo(r.seo)}];
  });
  // Remove references to unpublished or rejected content rather than emitting broken links.
- const routes = new Set(['/', '/work/', '/insights/', ...projects.map(p => p.href), ...services.map(s => `/${s.category}/${s.slug}/`), ...insights.map(i => `/insights/${i.slug}/`)]);
+ const routes = new Set(['/', '/work/', '/insights/', '/services/', '/industries/', '/about/', '/start-a-project/', ...projects.map(p => p.href), ...services.map(s => `/${s.category}/${s.slug}/`), ...insights.map(i => `/insights/${i.slug}/`)]);
  for (const item of [...projects, ...services, ...insights]) item.related = item.related.filter(link => routes.has(link.href));
- if (homepage.primaryCtaDestination.startsWith('#') && !new Set(['#contact','#work','#automation','#spatial','#build','#process','#products','#top','#main']).has(homepage.primaryCtaDestination)) homepage.primaryCtaDestination = '#contact';
+ if (homepage.primaryCtaDestination.startsWith('#') && !new Set(['#contact','#work','#automation','#spatial','#build','#services','#industries','#credibility','#process','#products','#top','#main']).has(homepage.primaryCtaDestination)) homepage.primaryCtaDestination = '#contact';
  if (homepage.primaryCtaDestination.startsWith('/') && !routes.has(homepage.primaryCtaDestination.split(/[?#]/)[0])) homepage.primaryCtaDestination = '#contact';
- const commercial = {industries, processSteps, about:aboutCopy, team:[]};
+ const rawCommercial=record(raw.commercial);
+ const commercial = {
+  industries: Array.isArray(rawCommercial.industries) ? list(rawCommercial.industries).map(record).map(r=>({title:text(r.title),description:text(r.description),services:strings(r.services).filter(s=>coreServices.some(service=>service.slug===s))})).filter(r=>r.title && r.description) : industries,
+  processSteps: items(rawCommercial.processSteps).length === 6 ? items(rawCommercial.processSteps) : processSteps,
+  about:{title:text(rawCommercial.aboutTitle,aboutCopy.title),introduction:text(rawCommercial.aboutIntroduction,aboutCopy.introduction),delivery:text(rawCommercial.aboutDelivery,aboutCopy.delivery),evidence:text(rawCommercial.aboutEvidence,aboutCopy.evidence)},
+  team:Array.isArray(rawCommercial.team) ? list(rawCommercial.team).map(record).filter(r=>r.approvedForPublication === true).map(r=>({name:text(r.name),role:text(r.role),biography:text(r.biography),image:editorialImage(r.image)})).filter(r=>r.name) : [{name:'Matthew Aisthorpe',role:'',biography:''},{name:'Guy',role:'',biography:''}],
+ };
  return {settings, homepage, projects, services, insights, commercial};
 }
 
