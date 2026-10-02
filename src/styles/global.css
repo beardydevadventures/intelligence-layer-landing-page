@@ -156,6 +156,17 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 
 /* The animated mark belongs to the banner and scrolls with it. */
 .card-heading { font-size:clamp(1.8rem,3vw,2.8rem); line-height:1.08; }
+.enquiry-section { max-width:1000px; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+form label { display:block; font-weight:650; margin-bottom:1.5rem; }
+form input,form select,form textarea { display:block; width:100%; background:white; border:1px solid #8590a3; border-radius:0; padding:.8rem; margin-top:.5rem; font:inherit; color:var(--ink); min-height:48px; }
+form input:focus-visible,form select:focus-visible,form textarea:focus-visible { outline:3px solid var(--blue); outline-offset:3px; }
+form textarea { resize:vertical; }
+form button { cursor:pointer; border:0; }
+form button:disabled { opacity:.55; cursor:not-allowed; }
+.form-notice { border-left:3px solid var(--blue); padding:1rem; background:#edf0f4; }
+[hidden] { display:none!important; }
+@media(max-width:600px) { .form-grid { grid-template-columns:1fr; gap:0; } }
 .industry-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:3rem; }
 .industry-grid article { border-top:1px solid var(--line); padding-top:2rem; }
 .industry-grid p { color:var(--muted); }
@@ -170,6 +181,15 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 .hero > .scene-shell { position:absolute; top:0; right:0; width:48%; height:100%; z-index:0; }
 .hero > .content { position:relative; z-index:1; }
 .hero > .hero-note { position:absolute; z-index:1; }
+.sales-hero { background:#07152e; color:#f7f8fa; }
+.sales-hero h1 { font-size:clamp(3rem,4.7vw,5.2rem); line-height:1.02; }
+.sales-hero .lead,.sales-hero .capability-line,.sales-hero .hero-note { color:#bac7dd; }
+.sales-hero .eyebrow { color:#a9bde3; }
+.sales-hero .button-primary { background:#f7f8fa; color:#07152e; }
+.sales-hero .button-text { color:#f7f8fa; border-color:#a9bde3; }
+.sales-hero .scene-fallback img { filter:brightness(1.8); }
+@media(min-width:901px) { .sales-hero .content { max-width: min(720px,52vw); } }
+@media(max-width:700px) { .hero > .scene-shell { opacity:.8; } }
 @media (max-width:900px) {
   .hero { padding-bottom:calc(36svh + 3rem); }
   .hero > .scene-shell { top:auto; bottom:1.5rem; width:100%; height:36svh; opacity:1; }
