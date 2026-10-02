@@ -4,7 +4,7 @@
 
 The website has a real HubSpot Forms submission adapter, not a mock success path. `src/lib/enquiry.ts` posts to the configured HubSpot form; only an accepted HTTP response leads to confirmation. The three tests use stub responses exclusively. No real lead or notification has been verified.
 
-Matthew supplied the shared AP1 form: portal `443295026`, form `38726c70-9735-4e71-bed7-7062bc2f5faf`. These public IDs are configured in the feature branch. There is no authenticated HubSpot connector. Public JSONP definition inspection returned status 403 with no form data, so required fields and consent/CAPTCHA remain unverified. `PUBLIC_HUBSPOT_FIELDS_CONFIRMED=false` keeps custom submission disabled until that compatibility check passes. The website therefore disables online submission and offers the existing contact email. Do not mark ILW-43 Done until the real receipt and notification evidence below is recorded.
+Matthew supplied the shared AP1 form: portal `443295026`, form `38726c70-9735-4e71-bed7-7062bc2f5faf`. These public IDs are configured in the feature branch. There is no authenticated HubSpot connector. Public JSONP definition inspection returned status 403 with no form data. Matthew subsequently confirmed the fields and settings are compatible on 3 October 2026. `PUBLIC_HUBSPOT_FIELDS_CONFIRMED=true` now enables custom submission in feature-branch builds, with the contact email retained as fallback. This is owner-confirmed compatibility, not independently verified CRM receipt or notifications. Do not mark ILW-43 Done until the real receipt and notification evidence below is recorded.
 
 ## Required owner input
 
