@@ -4,7 +4,7 @@
 
 The website has a real HubSpot Forms submission adapter, not a mock success path. `src/lib/enquiry.ts` posts to the configured HubSpot form; only an accepted HTTP response leads to confirmation. The three tests use stub responses exclusively. No real lead or notification has been verified.
 
-The current environment has no HubSpot connector, portal ID or form ID. The website therefore disables online submission and offers the existing contact email. Do not mark ILW-43 Done until the real receipt and notification evidence below is recorded.
+Matthew supplied the shared AP1 form: portal `443295026`, form `38726c70-9735-4e71-bed7-7062bc2f5faf`. These public IDs are configured in the feature branch. There is no authenticated HubSpot connector. Public JSONP definition inspection returned status 403 with no form data, so required fields and consent/CAPTCHA remain unverified. `PUBLIC_HUBSPOT_FIELDS_CONFIRMED=false` keeps custom submission disabled until that compatibility check passes. The website therefore disables online submission and offers the existing contact email. Do not mark ILW-43 Done until the real receipt and notification evidence below is recorded.
 
 ## Required owner input
 
@@ -31,3 +31,5 @@ Set `PUBLIC_HUBSPOT_PORTAL_ID` and `PUBLIC_HUBSPOT_FORM_ID` in an ignored local/
 6. Confirm the success conversion event fires once for the accepted submission, and that no marketing subscription is created by this enquiry payload.
 
 Never present a stub test or HTTP response alone as verified CRM delivery. Do not merge or deploy to complete this test without separate release authorisation.
+
+The supplied `/public/submit/formsnext/multipart/` URL is an embedded-form transport, not the JSON contract used by this custom adapter. Do not substitute it blindly. The custom adapter uses the [documented JSON Forms submission endpoint](https://developers.hubspot.com/changelog/2018-05-25-ajax-submission-endpoint). HubSpot requires fields to match the form definition; see [validation requirements](https://developers.hubspot.com/changelog/validation-change-to-the-forms-api-submission-endpoints). Provide the form editor field list (including required fields), data-processing consent and CAPTCHA settings. Then confirm payload compatibility and set `PUBLIC_HUBSPOT_FIELDS_CONFIRMED=true` in the authorised test build. API success alone is not CRM/notification acceptance.

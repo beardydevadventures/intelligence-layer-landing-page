@@ -3,7 +3,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import {getContent} from '../lib/sanity/content';
 import {hubspotEndpoint} from '../lib/enquiry';
 const {settings, services,marketing} = await getContent();
-const endpoint = hubspotEndpoint(import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID || '',import.meta.env.PUBLIC_HUBSPOT_FORM_ID || '');
+const endpoint = import.meta.env.PUBLIC_HUBSPOT_FIELDS_CONFIRMED === 'true' ? hubspotEndpoint(import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID || '',import.meta.env.PUBLIC_HUBSPOT_FORM_ID || '') : '';
 ---
 <SiteLayout title="Start a Project | Intelligence Layer" description="Tell Intelligence Layer about your AI automation, enterprise agent, immersive experience or digital twin project. Based in Brisbane, working across Australia."><main id="main"><header class="editorial-header"><p class="eyebrow">Start a project</p><h1>{marketing.enquiryHeading}</h1><p class="lead">{marketing.enquiryIntroduction}</p><p>{marketing.enquiryNextSteps}</p></header><section class="editorial-body enquiry-section" aria-label="Project enquiry">
 <p>{marketing.enquiryEmailIntroduction} <a class="inline-link" href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></p>
