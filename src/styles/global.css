@@ -200,3 +200,8 @@ form button:disabled { opacity:.55; cursor:not-allowed; }
 .marketing-heading { white-space:pre-line; }
 
 @media(max-width:900px) { html:not(.js-navigation) .site-header { position:relative; } }
+
+/* Analytics controls stay in normal flow and do not cover page content. */
+[data-measurement] { margin: 1rem auto; max-width: 70rem; padding: 1.25rem; border: 1px solid var(--line, #d8dce2); }
+[data-measurement] button, [data-preferences] { padding: .7rem 1rem; margin: .25rem; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+[data-preferences] { margin: 1rem; }

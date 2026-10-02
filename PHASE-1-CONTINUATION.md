@@ -21,3 +21,9 @@ Added `HUBSPOT-SETUP.md` with exact field mapping, owner inputs, safe environmen
 ## ILW-44 — focused QA
 
 Added `QA-PHASE-1.md` with executed static/source coverage and an explicit untested browser/device matrix. Fixed listing card heading levels, no-JavaScript mobile header flow and misleading live-update wording on illustrative venture mockups. Expanded generated-page checks for language/landmarks, accessible form labels, iframe titles and positive tabindex. The 21 tests, production build and all 16 generated-page checks pass; diff checks pass. Actual browser/device, keyboard/screen-reader, WebGL/reduced-motion and Lighthouse measurements remain unavailable. ILW-44 stays In Progress; no cross-browser or measured performance claim is made.
+
+## ILW-45 - measurement preparation
+
+Prepared a single optional GA4 collector behind a validated ID, canonical-origin guard and visitor opt-in. Events cover one page view per document, CTA clicks and accepted enquiry success, with consent gating, duplicate-success protection and URL/form-data minimisation. No configured property means no collector activation. Added account configuration and verification instructions in MEASUREMENT.md, including Enhanced measurement suppression and Search Console URL-prefix verification without DNS changes.
+
+Verification: 23 local tests pass, Astro checks have zero diagnostics, production build and all 16 generated-page SEO/accessibility checks pass. These are local evidence, not GA4 receipt or Google ownership verification. Property choice/ID, Search Console token, real DebugView/network evidence, sitemap submission and live-domain checks remain owner/external steps. No production configuration was changed. ILW-45 remains In Progress.

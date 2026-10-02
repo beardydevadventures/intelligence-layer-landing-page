@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import '@fontsource-variable/instrument-sans';
 import Logo from '../components/Logo.astro';
+import Measurement from '../components/Measurement.astro';
 import { site, organisation } from '../data/site';
 import {getContent} from '../lib/sanity/content';
 import type {EditorialImage} from '../lib/sanity/types';
@@ -31,6 +32,7 @@ const graph = [{...organisation, name:settings.companyName, email:settings.conta
 <slot />
 {settings.socialLinks.length > 0 && <div class="social-links" aria-label="Social links">{settings.socialLinks.map(link => <a href={link.url}>{link.label}</a>)}</div>}
 <div class="footer-navigation" role="navigation" aria-label="Footer navigation"><a href="/services/">Services</a><a href="/industries/">Industries</a><a href="/work/">Work</a><a href="/about/">About</a><a href="/start-a-project/">{marketing.projectCtaLabel}</a><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div><footer><Logo compact={true} /><p>AI automation &middot; Immersive technology</p><p>&copy; {new Date().getFullYear()} {settings.companyName} &middot; {settings.locationDescription}</p></footer>
+<Measurement />
 <script>
 document.documentElement.classList.add('js-navigation');
 document.addEventListener('click',event=>{

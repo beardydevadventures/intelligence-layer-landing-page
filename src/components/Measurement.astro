@@ -1,0 +1,57 @@
+---
+import {measurementId} from '../lib/measurement';
+import {site} from '../data/site';
+const id = measurementId(import.meta.env.PUBLIC_GA4_MEASUREMENT_ID);
+---
+{id && <section data-measurement data-id={id} data-origin={site.url} aria-label="Analytics preferences" hidden>
+ <p>Allow Google Analytics to help us understand visits and project enquiries? We do not send your form details.</p>
+ <button type="button" data-allow>Allow analytics</button> <button type="button" data-decline>Keep analytics off</button>
+</section>}
+{id && <button type="button" data-preferences hidden>Analytics preferences</button>}
+<script>
+import {conversionCollector, safePageUrl} from '../lib/measurement';
+const panel = document.querySelector<HTMLElement>('[data-measurement]');
+const preferences = document.querySelector<HTMLButtonElement>('[data-preferences]');
+if (panel && preferences && location.origin === new URL(panel.dataset.origin!).origin) {
+ const id = panel.dataset.id!;
+ const analyticsWindow = window as unknown as Window & {dataLayer?: unknown[]; [key:`ga-disable-${string}`]: boolean};
+ const key = 'il-analytics-consent-v1';
+ let started = false;
+ function gtag(..._args: unknown[]) { analyticsWindow.dataLayer ||= []; analyticsWindow.dataLayer.push(arguments); }
+ const collector = conversionCollector((name,parameters) => gtag('event',name,{...parameters,send_to:id}), location.href);
+ window.addEventListener('intelligence-layer:conversion',event => collector.receive(event));
+ const start = () => {
+  collector.consent(true);
+  analyticsWindow[`ga-disable-${id}`] = false;
+  if (started) return;
+  started = true;
+  gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+  gtag('js',new Date());
+  gtag('config',id,{send_page_view:false,allow_google_signals:false,allow_ad_personalization_signals:false});
+  gtag('event','page_view',{send_to:id,page_location:safePageUrl(location.href),page_referrer:safePageUrl(document.referrer)});
+  const script = document.createElement('script'); script.async = true; script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`; document.head.append(script);
+ };
+ const save = (allow: boolean) => {
+  try { localStorage.setItem(key,allow ? 'allow' : 'deny'); } catch { /* Choice still applies for this page. */ }
+  collector.consent(allow);
+  analyticsWindow[`ga-disable-${id}`] = !allow;
+  if (allow) start();
+  else if (started) {
+   // Drop queued events and reload to remove the loaded collector after withdrawal.
+   analyticsWindow.dataLayer = [];
+   location.reload();
+  }
+  panel.hidden = true;
+  preferences.focus();
+ };
+ let saved: string | null = null;
+ try { saved = localStorage.getItem(key); } catch { /* Ask without persistent storage. */ }
+ preferences.hidden = false;
+ panel.hidden = saved === 'allow' || saved === 'deny';
+ if (saved === 'allow') start();
+ panel.querySelector('[data-allow]')?.addEventListener('click',() => save(true));
+ panel.querySelector('[data-decline]')?.addEventListener('click',() => save(false));
+ preferences.addEventListener('click',() => {panel.hidden = false; panel.querySelector<HTMLButtonElement>('button')?.focus();});
+}
+</script>
+
