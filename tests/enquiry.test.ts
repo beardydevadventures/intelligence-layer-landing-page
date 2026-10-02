@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {hubspotEndpoint,enquiryPayload,submitEnquiry} from '../src/lib/enquiry';
+const enquiry={name:'Alex Example',organisation:'Example organisation',email:'alex@example.com',phone:'',service:'AI Automation',problem:'Reduce repeated entry',budget:'Not sure',timeline:'Exploring',contactMethod:'Email'};
+const endpoint=hubspotEndpoint('123','12345678-1234-1234-1234-123456789abc');
+test('HubSpot identifiers cannot redirect personal information to an arbitrary endpoint',()=>{assert.equal(hubspotEndpoint('https://evil.example','anything'),'');assert.match(endpoint,/^https:\/\/api.hsforms.com\//);});
+test('lead payload includes qualification context without subscribing to marketing or sending tracking cookies',()=>{const payload=enquiryPayload(enquiry,'https://intelligencelayer.com.au/start-a-project/');assert.ok(payload.fields.find(f=>f.name==='message')?.value.includes('Reduce repeated entry'));assert.doesNotMatch(JSON.stringify(payload),/hutk|ipAddress|communications|subscriptionTypeId/);});
+test('only a successful HubSpot response completes submission',async()=>{let captured='';await submitEnquiry(endpoint,enquiry,'https://example.com/',async (_url,init)=>{captured=String(init?.body);return new Response('{}',{status:200});});assert.match(captured,/alex@example.com/);await assert.rejects(submitEnquiry(endpoint,enquiry,'https://example.com/',async()=>new Response('{}',{status:400})));await assert.rejects(submitEnquiry(endpoint,enquiry,'https://example.com/',async()=>{throw new Error('Offline');}));await assert.rejects(submitEnquiry('',enquiry,'https://example.com/'));});
