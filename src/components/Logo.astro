@@ -2,18 +2,6 @@
 const { compact = false } = Astro.props;
 ---
 <a class="brand" href="/" aria-label="Intelligence Layer home">
-  {compact ? (
-    <svg class="brand-mark" viewBox="0 0 58 58" aria-hidden="true">
-      <path d="m29 5 23 13-23 13L6 18 29 5Z" fill="currentColor" opacity=".28"/>
-      <path d="m6 26 23 13 23-13v9L29 48 6 35v-9Z" fill="currentColor" opacity=".65"/>
-      <path d="m6 38 23 13 23-13v8L29 58 6 46v-8Z" fill="currentColor"/>
-      <path d="M29 7v44M9 18v14m40-14v14" stroke="white" stroke-width="1.6" opacity=".9"/>
-      <circle cx="29" cy="7" r="3.2" fill="white"/><circle cx="9" cy="18" r="2.5" fill="white"/><circle cx="49" cy="18" r="2.5" fill="white"/>
-    </svg>
-  ) : (
-    <picture>
-      <source media="(max-width: 900px)" srcset="/brand/intelligence-layer-mark.png" />
-      <img class="brand-image" src="/brand/intelligence-layer-wordmark.png" width="720" height="145" alt="" fetchpriority="high" />
-    </picture>
-  )}
+  <img class="brand-mark" src="/brand/intelligence-layer-mark-flat.svg" width="38" height="42" alt="" fetchpriority={compact ? 'auto' : 'high'} />
+  {!compact && <span class="brand-name">Intelligence <strong>Layer</strong></span>}
 </a>

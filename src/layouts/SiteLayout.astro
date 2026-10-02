@@ -15,7 +15,7 @@ const graph = [{...organisation, name:settings.companyName, email:settings.conta
 <html lang="en-AU"><head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
 <title>{title}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
-<meta name="theme-color" content="#f7f8fa" /><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+<meta name="theme-color" content="#f7f8fa" /><link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" /><link rel="icon" type="image/svg+xml" href="/brand/intelligence-layer-mark-flat.svg" />
 <meta property="og:type" content={article ? 'article' : 'website'} /><meta property="og:site_name" content={settings.companyName} /><meta property="og:locale" content="en_AU" /><meta property="og:title" content={ogTitle} /><meta property="og:description" content={ogDescription} /><meta property="og:url" content={canonical} />
 {ogImage && <><meta property="og:image" content={ogImage.src} /><meta property="og:image:alt" content={ogImage.alt} /><meta property="og:image:width" content={String(Math.min(ogImage.width,1600))} /></>}
 <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />{ogImage && <meta name="twitter:image" content={ogImage.src} />}<meta name="twitter:title" content={ogTitle} /><meta name="twitter:description" content={ogDescription} />
