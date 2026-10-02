@@ -155,6 +155,17 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 .scene-fallback img { width:min(80%,370px); height:auto; }
 
 /* The animated mark belongs to the banner and scrolls with it. */
+.card-heading { font-size:clamp(1.8rem,3vw,2.8rem); line-height:1.08; }
+.industry-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:3rem; }
+.industry-grid article { border-top:1px solid var(--line); padding-top:2rem; }
+.industry-grid p { color:var(--muted); }
+.delivery-steps { list-style:none; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2rem; }
+.delivery-steps li { border-top:1px solid var(--line); padding-top:1.5rem; }
+.delivery-steps h3 { font-size:2rem; }
+.delivery-steps p { color:var(--muted); }
+.process-action { margin-top:2rem; }
+.footer-navigation { display:flex; flex-wrap:wrap; gap:1rem 2rem; padding:2rem var(--pad); background:#040d20; color:white; position:relative; z-index:5; }
+@media(max-width:700px) { .industry-grid,.delivery-steps { grid-template-columns:1fr; } }
 .hero { position:relative; isolation:isolate; overflow:hidden; }
 .hero > .scene-shell { position:absolute; top:0; right:0; width:48%; height:100%; z-index:0; }
 .hero > .content { position:relative; z-index:1; }

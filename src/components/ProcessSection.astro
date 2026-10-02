@@ -1,0 +1,5 @@
+---
+import {getContent} from '../lib/sanity/content';
+const {homepage, commercial} = await getContent();
+---
+<section class="process" id="process"><div class="section-head"><div><p class="section-index">How we work</p><h2>From possibility<br />to practical.</h2></div><p>{homepage.processIntroduction}</p></div><ol class="delivery-steps">{commercial.processSteps.map((step,i)=><li><span class="section-index">0{i+1}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol><p class="process-action"><a class="button button-primary" href="/start-a-project/">Start with a conversation <span aria-hidden="true">↗</span></a></p></section>
