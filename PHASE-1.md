@@ -23,9 +23,45 @@ Order: ILW-2, ILW-4, ILW-5, ILW-6, ILW-3, ILW-7, ILW-8, ILW-9, ILW-10, ILW-11.
 
 ## Decisions requiring business input
 
-- ILW-7: real enquiry delivery endpoint/provider and its data handling policy. Never report an enquiry as received without a successful delivery response.
+- ILW-7: HubSpot is the selected provider. Portal ID, form ID, accepted fields, consent/spam settings and a verified CRM receipt remain outstanding. Never report an enquiry as received without a successful delivery response.
 - ILW-9: Guy's editor membership and independent editing verification; production rebuild timing cannot be re-tested without a production publish/deploy, which is excluded from this task.
 - ILW-11: approved analytics property/provider, Search Console access/verification, and conversion collection destination.
-- About: approved individual biographies are not supplied. Existing delivery statements provide factual credibility; optional team content must remain empty until supplied.
+- About: Matthew and Guy are named per the user's instruction. No roles, biographies, photographs or credentials have been invented; approved additions can be made in the CMS.
 
 No production deployment, CMS publication, or merge is part of this implementation.
+
+## Final review — 3 October 2026
+
+| Ticket | Implementation and acceptance | Jira disposition |
+| --- | --- | --- |
+| ILW-2 | Page purposes, service/industry page decisions and navigation hierarchy documented; routes implemented | Done |
+| ILW-3 | Homepage follows hero, services, sectors, process, work, credibility and final enquiry CTA; ventures preserved; final copy supplied | In Progress: desktop/mobile visual acceptance remains |
+| ILW-4 | Four core offerings have problems, delivery, potential outcomes, use cases, buyer questions and project CTA; existing VR page preserved | Done |
+| ILW-5 | Seven distinct sectors explain relevant challenges and mapped services; no past engagement claims | Done |
+| ILW-6 | Discover, Define, Prototype, Build, Deploy, Improve are explained in a responsive numbered visual sequence with a following CTA | Done |
+| ILW-7 | Accessible enquiry page, qualification form, validation, retained-input error state, accepted-response confirmation and email fallback implemented | In Progress: HubSpot configuration and receipt test |
+| ILW-8 | Approved SVG drives hovering 3D layers; dark hero, smaller mark, capped pixel ratio, visibility pause and adaptive static fallbacks implemented | In Progress: visual and device performance acceptance |
+| ILW-9 | CMS schema, published projection, normalisation, draft preview and local migration extended to sectors, process, About and team | In Progress: activation and independent editor/rebuild verification |
+| ILW-10 | Commercial routes, unique metadata, single H1, canonical URLs, internal links, Service/Organization schema, FAQs, social thumbnail, robots and sitemap verified | Done |
+| ILW-11 | Generated-page regression checks added; duplicate Wrangler build key fixed; release gate documented | In Progress: external and visual launch checks |
+
+### Validation evidence
+
+- `npm test`: 19 tests pass, covering CMS safeguards, commercial edits and HubSpot success/failure behaviour using stub responses.
+- `npm run build`: succeeds using the real published Sanity snapshot; Astro checks 53 files with zero errors, warnings or hints and emits 16 HTML pages plus sitemap. Vite reports the deferred Three.js scene chunk over 500 kB (524,067 bytes minified; approximately 131 kB gzip). Mobile/reduced-motion paths avoid loading it. No measured Core Web Vitals claim is made.
+- `npm run validate:site`: all 16 HTML pages pass unique titles, descriptions, H1 count, parseable Organization/Service JSON-LD, social metadata, local links/assets, fragment IDs and sitemap/indexing checks.
+- `npm run cms:build`: succeeds. `npx sanity schema validate`: zero errors and warnings.
+- `npm run cms:seed`: creates eleven local documents; nothing imported or published.
+- `git diff --check`: passes. No standalone lint command exists; Astro's checks are the project's configured type/static checks.
+- Source review covers desktop grids, tablet breakpoints, single-column mobile content/forms, menu semantics, keyboard focus, skip links, decorative canvas, reduced-motion and no-JavaScript navigation/email access.
+- Browser inventory returns no available browser. Desktop/tablet/mobile rendering, actual WebGL behaviour, keyboard/screen-reader interaction, social crawler rendering and measured performance remain unverified. ILW-3/8/11 stay open for those acceptance checks.
+
+### Release gate and follow-up
+
+1. Review at 1440, 1024, 768, 390 and 320 CSS pixels; test mobile menu, tab order, form validation, reduced-motion changes and WebGL unavailable/context loss. Measure performance on an ordinary mobile device and desktop.
+2. Connect HubSpot or supply the public portal/form identifiers. Verify field/consent/spam settings, a successful CRM receipt, lead-owner notification, rejected submission and offline behaviour. Do not enable a form merely because identifiers are syntactically valid.
+3. After release authorisation, activate the new Studio schema and missing CMS documents, extend the published-only webhook, and have Guy verify draft/preview/publish and actual rebuild timing.
+4. Select an analytics property/provider and consent approach; connect the PII-free click and confirmed-enquiry events and verify collection. Supply Search Console verification and submit the sitemap after release.
+5. Add approved team roles/biographies and genuine project captures when available. The default social thumbnail is the existing mark; a dedicated sharing card is a useful future improvement.
+
+ILW-1 remains open: the branch materially improves commercial understanding and the sales journey, but a live conversion, independent publishing and measurable launch readiness have not been verified. No merge, production deploy or published CMS mutation was performed.
