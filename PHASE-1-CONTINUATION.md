@@ -11,3 +11,9 @@ Existing Homepage, Services, Industries/process/About, Projects and Site Setting
 Verification: 21 tests pass; Astro checks have zero errors/warnings/hints; the real published-data production build and all 16 generated-page checks pass; Studio builds; schema validation has zero errors/warnings; local seed export succeeds. No standalone lint script exists. Existing deferred Three.js chunk warning remains.
 
 Limitation: browser inventory has no browser, so Studio interaction and frontend visual rendering could not be exercised. No new schema or documents were activated in production. Guy has not personally completed an acceptance test, and new content publish/rebuild timing is not verified. ILW-9 remains In Progress until those acceptance steps are performed after separate release authorisation.
+
+## ILW-43 — HubSpot connection
+
+Inspected the full Jira acceptance criteria and existing submission adapter. No mock success path is used in the website; tests alone use stub responses. Local production-mode configuration inspection confirms both portal/form identifiers are absent, and HubSpot remains unconnected. Existing validation, pending state, accepted-response success, retained-input error behaviour and email fallback remain intact. The three focused enquiry tests pass.
+
+Added `HUBSPOT-SETUP.md` with exact field mapping, owner inputs, safe environment setup and CRM/notification evidence requirements. Actual configuration, lead receipt and notification verification are blocked on external input. ILW-43 remains open; no test lead, production change or deployment was made.
