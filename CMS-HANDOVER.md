@@ -1,6 +1,6 @@
 # Guy's content editing handover
 
-Preparation for ILW-46. Guy's access is believed to exist but has not been verified. This branch's new schema has not been activated in production. A real publish can trigger the existing production build hook, so the acceptance exercise requires separate release authorisation. Do not perform it against the current live Studio before that approval.
+Preparation for ILW-46. Matthew confirmed on 3 October 2026 that Guy has access. Independent edit/preview/publish acceptance has not yet been performed. This branch's new schema has not been activated in production. A real publish can trigger the existing production build hook, so the acceptance exercise requires separate release authorisation. Do not perform it against the current live Studio before that approval.
 
 ## Where to edit
 

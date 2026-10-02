@@ -7,9 +7,9 @@ Prepared 3 October 2026 on `feature/ilw-phase-1-sales-ready`. **Not release-appr
 | Area | Local preparation/evidence | Outstanding release acceptance |
 | --- | --- | --- |
 | Commercial website | Sitemap, four offers, seven sectors, six-step process, About and enquiry journey implemented; prior ILW-2/4/5/6 Done | Visual acceptance for homepage/hero; real enquiry destination |
-| CMS | Typed defaults/projections, protected singletons, schema/build pass; twelve-document local export | Activate reviewed schema/missing documents only when authorised; Guy access and independent test |
+| CMS | Typed defaults/projections, protected singletons, schema/build pass; twelve-document local export | Activate reviewed schema/missing documents only when authorised; Guy independent test (access confirmed by Matthew) |
 | Enquiry | Real HubSpot adapter, accepted-response-only success, error/input retention and email fallback; local tests | Portal/form IDs, exact consent/CAPTCHA settings, correct CRM record and notification recipient proof |
-| Measurement | Optional opt-in GA4 collector and event tests; meta verification support | Approved GA4 property, actual request/receipt checks, Enhanced measurement settings, Search Console verification/sitemap |
+| Measurement | Optional opt-in GA4 collector and event tests; meta verification support | Approved GA4 ID configured; actual request/receipt checks, Enhanced measurement settings and sitemap acceptance pending (Search Console URL property verified per Matthew) |
 | QA | 23 tests and generated-page checks; QA-PHASE-1.md matrix | Actual browser/device, keyboard/screen-reader, reduced-motion/WebGL and measured performance |
 | Publishing | Published-only read model; existing host/static build configuration reviewed | New content types in production hook; actual Guy publish → rebuild → public HTML timing |
 
