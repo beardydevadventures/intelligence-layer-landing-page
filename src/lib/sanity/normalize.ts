@@ -2,6 +2,7 @@ import { defaultHomepage, defaultSettings, defaultVrService } from './defaults';
 import { projects as baselineProjects } from '../../data/projects';
 import { contactEmail, editorialImage, isoDate, items, list, portableText, record, relatedLinks, safeUrl, seo, slug, strings, text, video } from './helpers';
 import type { CmsProject, Homepage, Insight, Service, Settings, SiteContent } from './types';
+import {coreServices, industries, processSteps, aboutCopy} from '../../data/commercial';
 const published = (value: unknown) => !text(record(value)._id).startsWith('drafts.') && !text(record(value)._id).startsWith('versions.');
 export function normalizeContent(value: unknown, configured = false): SiteContent {
  const raw = record(value), rawSettings = record(raw.settings), rawHome = record(raw.homepage);
@@ -21,16 +22,16 @@ export function normalizeContent(value: unknown, configured = false): SiteConten
  const byIds = (value: unknown) => strings(value).map(id => projects.find(p => p.id === id)).filter((p): p is CmsProject => !!p);
  const rawServices = list(raw.services).filter(published).map(record);
  const vr = rawServices.find(r => r.slug === 'vr-development' && r.category === 'xr');
- const serviceSources = [ {...defaultVrService, ...vr, _id: text(vr?._id, defaultVrService.id), title: text(vr?.title, defaultVrService.title), seo: {...defaultVrService.seo, ...record(vr?.seo)}}, ...rawServices.filter(r => !(r.slug === 'vr-development' && r.category === 'xr')) ];
+ const serviceSources: Record<string, unknown>[] = [ {...defaultVrService, ...vr, _id: text(vr?._id, defaultVrService.id), title: text(vr?.title, defaultVrService.title), seo: {...defaultVrService.seo, ...record(vr?.seo)}}, ...coreServices.map(base => ({...base, _id:base.id, ...rawServices.find(r => r.slug === base.slug && r.category === base.category)})), ...rawServices.filter(r => !(r.slug === 'vr-development' && r.category === 'xr') && !coreServices.some(base => base.slug === r.slug && base.category === r.category)) ];
  const servicePaths = new Set<string>();
  const services: Service[] = serviceSources.flatMap(r => {
   const s = slug(r.slug), title = text(r.title), category = text(r.category);
   if (!s || !title || !['ai','xr'].includes(category) || servicePaths.has(`${category}/${s}`)) return [];
   servicePaths.add(`${category}/${s}`);
-  const fallback = s === 'vr-development' && category === 'xr' ? defaultVrService : undefined;
+  const fallback = s === 'vr-development' && category === 'xr' ? defaultVrService : coreServices.find(base => base.slug === s && base.category === category);
   if (!fallback && (!text(r.introduction) || !text(r.shortDescription))) return [];
   const arr = (key: 'useCases' | 'capabilities') => items(r[key]).length ? items(r[key]) : fallback?.[key] ?? [];
-  const chosenProjects = Array.isArray(r.featuredProjectIds) ? byIds(r.featuredProjectIds) : fallback ? projects.filter(p => p.platform.includes('Meta Quest') || p.platform.includes('VR')) : [];
+  const chosenProjects = Array.isArray(r.featuredProjectIds) ? byIds(r.featuredProjectIds) : s === 'vr-development' ? projects.filter(p => p.platform.includes('Meta Quest') || p.platform.includes('VR')) : [];
   const faqs = list(r.faqs).map(record).map(f => ({question: text(f.question), answer: text(f.answer)})).filter(f => f.question && f.answer);
   return [{id: text(r._id, `service-${s}`), slug: s, title, category: category as 'ai' | 'xr', headline: text(r.headline, fallback?.headline ?? title), introduction: text(r.introduction, fallback?.introduction ?? ''), shortDescription: text(r.shortDescription, fallback?.shortDescription ?? ''), overviewHeading: text(r.overviewHeading) || undefined, overviewCopy: text(r.overviewCopy) || undefined, useCases: arr('useCases'), capabilities: arr('capabilities'), technologies: strings(r.technologies), faqs: faqs.length ? faqs : fallback?.faqs ?? [], featuredProjects: chosenProjects, related: relatedLinks(r.related), seo: seo(r.seo), publishedAt: isoDate(r.publishedAt), productionCapabilities: strings(r.productionCapabilities), deliveryHeading: text(r.deliveryHeading) || undefined, deliveryIntroduction: text(r.deliveryIntroduction) || undefined, deliveryApproach: text(r.deliveryApproach) || undefined, workIntroduction: text(r.workIntroduction) || undefined}];
  });
@@ -52,5 +53,7 @@ export function normalizeContent(value: unknown, configured = false): SiteConten
  for (const item of [...projects, ...services, ...insights]) item.related = item.related.filter(link => routes.has(link.href));
  if (homepage.primaryCtaDestination.startsWith('#') && !new Set(['#contact','#work','#automation','#spatial','#build','#process','#products','#top','#main']).has(homepage.primaryCtaDestination)) homepage.primaryCtaDestination = '#contact';
  if (homepage.primaryCtaDestination.startsWith('/') && !routes.has(homepage.primaryCtaDestination.split(/[?#]/)[0])) homepage.primaryCtaDestination = '#contact';
- return {settings, homepage, projects, services, insights};
+ const commercial = {industries, processSteps, about:aboutCopy, team:[]};
+ return {settings, homepage, projects, services, insights, commercial};
 }
+
