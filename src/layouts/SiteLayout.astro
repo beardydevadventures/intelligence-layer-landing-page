@@ -23,10 +23,10 @@ const graph = [{...organisation, name:settings.companyName, email:settings.conta
 <script is:inline type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\u003c')} />
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header" data-header><Logo /><button class="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="Open navigation"><span>Menu</span><i></i></button><nav id="navigation" aria-label="Primary navigation"><a href="/work/">Work</a><a href="/#automation">AI & Automation</a><a href="/xr/vr-development/">XR Development</a><a href="/#process">How we work</a>{insights.length > 0 && <a href="/insights/">Insights</a>}<a class="nav-contact" href="/#contact">Start a project <span aria-hidden="true">&#8599;</span></a></nav></header>
+<header class="site-header" data-header><Logo /><button class="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="Open navigation"><span>Menu</span><i></i></button><nav id="navigation" aria-label="Primary navigation"><a href="/services/">Services</a><a href="/industries/">Industries</a><a href="/work/">Work</a><a href="/about/">About</a>{insights.length > 0 && <a href="/insights/">Insights</a>}<a class="nav-contact" href="/start-a-project/">Start a project <span aria-hidden="true">?</span></a></nav></header>
 <slot />
 {settings.socialLinks.length > 0 && <div class="social-links" aria-label="Social links">{settings.socialLinks.map(link => <a href={link.url}>{link.label}</a>)}</div>}
-<footer><Logo compact={true} /><p>AI automation &middot; Immersive technology</p><p>&copy; {new Date().getFullYear()} {settings.companyName} &middot; {settings.locationDescription}</p></footer>
+<div class="footer-navigation" role="navigation" aria-label="Footer navigation"><a href="/services/">Services</a><a href="/industries/">Industries</a><a href="/work/">Work</a><a href="/about/">About</a><a href="/start-a-project/">Start a project</a><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div><footer><Logo compact={true} /><p>AI automation &middot; Immersive technology</p><p>&copy; {new Date().getFullYear()} {settings.companyName} &middot; {settings.locationDescription}</p></footer>
 <script>
 document.documentElement.classList.add('js-navigation');
 const header = document.querySelector('[data-header]');

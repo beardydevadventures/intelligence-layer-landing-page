@@ -2,4 +2,4 @@
 import {getContent} from '../lib/sanity/content';
 const {settings, homepage} = await getContent();
 ---
-<section class="final-cta" id="contact" data-scene="final"><div class="cta-inner"><p class="section-index">Start a project</p><h2>{homepage.finalCtaHeading}</h2><p>{homepage.finalCtaCopy}</p><a class="button button-light" href={`mailto:${settings.contactEmail}`}>{settings.contactCta} <span aria-hidden="true">&#8599;</span></a><a class="contact-email" href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div></section>
+<section class="final-cta" id="contact" data-scene="final"><div class="cta-inner"><p class="section-index">Start a project</p><h2>{homepage.finalCtaHeading}</h2><p>{homepage.finalCtaCopy}</p><a class="button button-light" href="/start-a-project/">Start a project <span aria-hidden="true">&#8599;</span></a><a class="contact-email" href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div></section>
