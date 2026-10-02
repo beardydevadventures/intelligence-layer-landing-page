@@ -1,0 +1,8 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ContactSection from '../components/ContactSection.astro';
+import {getCommercialContent} from '../lib/sanity/commercial';
+import {coreServices} from '../data/commercial';
+const {industries} = await getCommercialContent();
+---
+<SiteLayout title="Industries for AI & Immersive Technology | Intelligence Layer" description="Practical AI and immersive technology use cases for mining, energy, engineering, government, transport, education and real estate."><main id="main"><header class="editorial-header"><p class="eyebrow">Who we work with</p><h1>Start with the challenge in your sector.</h1><p class="lead">These are potential applications of our services. Discovery checks the fit with your people, systems and operating requirements.</p></header><section class="service-section"><div class="industry-grid">{industries.map(industry => <article><h2 class="card-heading">{industry.title}</h2><p>{industry.description}</p><ul>{industry.services.map(slug => {const service=coreServices.find(s=>s.slug===slug); return service && <li><a class="inline-link" href={`/${service.category}/${service.slug}/`}>{service.title}</a></li>;})}</ul><a class="inline-link" href="/start-a-project/">Discuss your {industry.title.toLowerCase()} project</a></article>)}</div></section><ContactSection /></main></SiteLayout>
