@@ -4,26 +4,31 @@
 </div>
 <script>
   const canvas = document.querySelector<HTMLCanvasElement>('#intelligence-scene');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (canvas && !reduce) {
-    const start = async () => {
-      try {
-        const { IntelligenceLayerScene } = await import('./IntelligenceLayerScene');
-        // WebGPU is attempted only on capable browsers; WebGL remains the dependable baseline.
-        let renderer;
-        if ('gpu' in navigator) {
-          try {
-            const { WebGPURenderer } = await import('three/webgpu');
-            const candidate = new WebGPURenderer({ canvas, antialias: true, alpha: true });
-            await candidate.init();
-            renderer = candidate;
-          } catch { /* Fall through to WebGL. */ }
-        }
-        new IntelligenceLayerScene(canvas, renderer);
-        document.documentElement.classList.add('scene-ready');
-      } catch { document.documentElement.classList.add('scene-failed'); }
-    };
-    if ('requestIdleCallback' in window) window.requestIdleCallback(start, { timeout: 1200 });
-    else setTimeout(start, 80);
-  }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 700px)');
+  let scene: import('./IntelligenceLayerScene').IntelligenceLayerScene | undefined;
+  let starting = false;
+  const update = async () => {
+    if (!canvas) return;
+    if (reduce.matches || mobile.matches) {
+      scene?.destroy(); scene=undefined;
+      document.documentElement.classList.remove('scene-ready');
+      return;
+    }
+    if (scene || starting) return;
+    starting=true;
+    try {
+      const {IntelligenceLayerScene} = await import('./IntelligenceLayerScene');
+      if (reduce.matches || mobile.matches) return;
+      scene=new IntelligenceLayerScene(canvas);
+      canvas.addEventListener('webglcontextlost',()=>{scene?.destroy();scene=undefined;document.documentElement.classList.remove('scene-ready');},{once:true});
+      document.documentElement.classList.add('scene-ready');
+    } catch {document.documentElement.classList.add('scene-failed');}
+    finally {starting=false;}
+  };
+  reduce.addEventListener('change',update); mobile.addEventListener('change',update);
+  addEventListener('pagehide',()=>{scene?.destroy();scene=undefined;document.documentElement.classList.remove('scene-ready');});
+  addEventListener('pageshow',update);
+  if ('requestIdleCallback' in window) window.requestIdleCallback(update,{timeout:1200});
+  else setTimeout(update,80);
 </script>

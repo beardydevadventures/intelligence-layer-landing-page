@@ -4,7 +4,7 @@ import { schemaTypes } from './sanity/schema';
 import { ContentPreview } from './sanity/ContentPreview';
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || process.env.SANITY_PROJECT_ID;
 if (!projectId) throw new Error('Set SANITY_STUDIO_PROJECT_ID before starting or building Sanity Studio.');
-const singletons = new Set(['siteSettings','homepage']);
+const singletons = new Set(['siteSettings','homepage','commercialContent','marketingCopy']);
 export default defineConfig({
  name: 'intelligence-layer', title: 'Intelligence Layer Content', projectId,
  dataset: process.env.SANITY_STUDIO_DATASET || process.env.SANITY_DATASET || 'production',
@@ -12,6 +12,8 @@ export default defineConfig({
   structure: S => S.list().title('Content').items([
    S.listItem().title('Site settings').id('siteSettings').child(S.document().schemaType('siteSettings').documentId('siteSettings')),
    S.listItem().title('Homepage').id('homepage').child(S.document().schemaType('homepage').documentId('homepage')),
+   S.listItem().title('Page headings & enquiry copy').id('marketingCopy').child(S.document().schemaType('marketingCopy').documentId('marketingCopy')),
+   S.listItem().title('Industries, process & About').id('commercialContent').child(S.document().schemaType('commercialContent').documentId('commercialContent')),
    S.divider(), ...S.documentTypeListItems().filter(item => !singletons.has(item.getId() || '')),
   ]),
   defaultDocumentNode: (S, {schemaType}) => S.document().views(singletons.has(schemaType) || ['project','service','insight'].includes(schemaType) ? [S.view.form(), S.view.component(ContentPreview).title('Draft content preview')] : [S.view.form()]),

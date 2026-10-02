@@ -4,6 +4,7 @@ import { PortableText } from '@portabletext/react';
 import type { PortableTextBlock } from '@portabletext/types';
 import { editorialImage, items, list, portableText, record, routeFor, safeUrl, text } from '../src/lib/sanity/helpers';
 import type { EditorialImage } from '../src/lib/sanity/types';
+import {defaultMarketingCopy,marketingKeys,marketingTitle} from '../src/data/marketing';
 interface Props {document: {displayed: Record<string, unknown> | null}}
 export function ContentPreview({document}: Props) {
  const doc = record(document.displayed), client = useClient({apiVersion: '2026-10-01'});
@@ -23,14 +24,15 @@ export function ContentPreview({document}: Props) {
   return Object.fromEntries(Object.entries({...r, ...(ref && images[ref] ? {asset: images[ref]} : {})}).map(([k,v]) => [k, withAssets(v)]));
  };
  const resolved = record(withAssets(doc));
- const title = text(doc.heroHeading, text(doc.headline, text(doc.title, text(doc.companyName, 'Draft content'))));
- const publicPath = doc._type === 'homepage' || doc._type === 'siteSettings' ? '/' : routeFor({...doc, slug: record(doc.slug).current});
+ const title = text(doc.aboutTitle,text(doc.heroHeading, text(doc.headline, text(doc.title, text(doc.companyName, 'Draft content')))));
+ const publicPath = doc._type === 'marketingCopy' ? '/' : doc._type === 'commercialContent' ? '/about/' : doc._type === 'homepage' || doc._type === 'siteSettings' ? '/' : routeFor({...doc, slug: record(doc.slug).current});
  const publicUrl = safeUrl(`${process.env.SANITY_STUDIO_PUBLIC_SITE_URL || 'https://intelligencelayer.com.au'}${publicPath}`);
  const renderImage = (image?: EditorialImage) => image && <figure><img src={image.src} alt={image.alt} style={{width:'100%',height:'auto'}} />{image.caption && <figcaption>{image.caption}</figcaption>}</figure>;
  return <div style={{background:'#f7f8fa',color:'#071126',padding:'2rem',fontFamily:'Arial,sans-serif',lineHeight:1.6,maxWidth:900,margin:'auto'}}>
   <p style={{fontSize:13,color:'#5d6678'}}>Draft content preview. Changes here are not public until published and the website rebuild completes. This checks content, not the full website layout.</p>
   {publicPath && <a href={publicUrl} target="_blank" rel="noreferrer">Open published page</a>}
   <h1 style={{lineHeight:1.05,fontSize:42,letterSpacing:'-.04em'}}>{title}</h1>
+  {doc._type === 'marketingCopy' && marketingKeys.map(key=><section key={key}><h2>{marketingTitle(key)}</h2><p>{text(doc[key],defaultMarketingCopy[key])}</p></section>)}
   <p>{text(doc.heroIntroduction, text(doc.introduction, text(doc.shortDescription, text(doc.excerpt))))}</p>
   {renderImage(editorialImage(resolved.coverImage))}
   {doc._type === 'homepage' && <>
@@ -38,7 +40,8 @@ export function ContentPreview({document}: Props) {
    <h2>{text(doc.xrHeading)}</h2><p>{text(doc.xrIntroduction)}</p>
    <h2>What could we build together?</h2><p>{text(doc.buildIntroduction)}</p>
   </>}
-  {['xrCategories','outcomes','useCases','capabilities','ventures'].map(key => items(doc[key]).map((item,i) => <section key={`${key}-${i}`}><h2>{item.title}</h2><p>{item.description}</p></section>))}
+  {['xrCategories','outcomes','useCases','capabilities','ventures','industries','processSteps'].map(key => items(doc[key]).map((item,i) => <section key={`${key}-${i}`}><h2>{item.title}</h2><p>{item.description}</p></section>))}
+  {doc._type === 'commercialContent' && <><p>{text(doc.aboutIntroduction)}</p><h2>Delivery</h2><p>{text(doc.aboutDelivery)}</p><h2>Evidence</h2><p>{text(doc.aboutEvidence)}</p><h2>Team</h2>{list(doc.team).map((value,i)=>{const person=record(value);return <section key={i}><h3>{text(person.name)}</h3><p>{text(person.role)}</p><p>{text(person.biography)}</p>{renderImage(editorialImage(person.image))}<p>{person.approvedForPublication === true ? 'Approved for publication' : 'Not displayed publicly'}</p></section>;})}</>}
   <PortableText value={portableText(resolved.body) as PortableTextBlock[]} components={{types: {
    editorialImage: ({value}) => renderImage(value.image as EditorialImage),
    callout: ({value}) => <aside><strong>{text(value.title)}</strong><p>{text(value.text)}</p></aside>,

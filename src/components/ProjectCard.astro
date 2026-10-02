@@ -1,10 +1,11 @@
 ---
 import type {CmsProject} from '../lib/sanity/types';
 import VideoMedia from './VideoMedia.astro';
-interface Props {project: CmsProject}
+interface Props {project: CmsProject; headingLevel?: 2 | 3}
 const {project} = Astro.props;
+const Heading=Astro.props.headingLevel === 2 ? 'h2' : 'h3';
 ---
 <article class="project-card" id={project.slug}>
  {project.video ? <VideoMedia media={project.video} poster={project.poster} /> : project.image ? <img src={project.image.src} srcset={project.image.srcset} sizes="(max-width: 1100px) 100vw, 33vw" alt={project.image.alt} width={project.image.width} height={project.image.height} loading="lazy" decoding="async" /> : null}
- <div class="project-copy"><p class="eyebrow">{project.category}</p><h3><a href={project.href}>{project.title}</a></h3><p class="project-headline">{project.headline}</p><p>{project.description}</p><ul class="tags" aria-label={`${project.title} technologies`}>{project.tags.map(tag => <li>{tag}</li>)}</ul>{project.note && <small>{project.note}</small>}<a class="project-link" href={project.href}>Explore {project.title} <span aria-hidden="true">&#8599;</span></a></div>
+ <div class="project-copy"><p class="eyebrow">{project.category}</p><Heading><a href={project.href}>{project.title}</a></Heading><p class="project-headline">{project.headline}</p><p>{project.description}</p><ul class="tags" aria-label={`${project.title} technologies`}>{project.tags.map(tag => <li>{tag}</li>)}</ul>{project.note && <small>{project.note}</small>}<a class="project-link" href={project.href}>Explore {project.title} <span aria-hidden="true">&#8599;</span></a></div>
 </article>

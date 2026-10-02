@@ -69,7 +69,7 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 .project-card { background:white; border:1px solid var(--line); min-width:0; }
 .project-card img,.project-card video { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; background:var(--ink); }
 .project-copy { padding:clamp(1.4rem,2.5vw,2.5rem); }
-.project-copy h3 { font-size:clamp(2rem,2.6vw,3rem); margin-bottom:1.5rem; }
+.project-copy :is(h2,h3) { font-size:clamp(2rem,2.6vw,3rem); margin-bottom:1.5rem; }
 .project-copy .eyebrow { font-size:.65rem; color:var(--blue); }
 .project-copy p:not(.eyebrow) { color:var(--muted); }
 .project-copy .project-headline { font-weight:650; color:var(--ink)!important; }
@@ -155,11 +155,53 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline:3px solid v
 .scene-fallback img { width:min(80%,370px); height:auto; }
 
 /* The animated mark belongs to the banner and scrolls with it. */
+.card-heading { font-size:clamp(1.8rem,3vw,2.8rem); line-height:1.08; }
+.enquiry-section { max-width:1000px; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+form label { display:block; font-weight:650; margin-bottom:1.5rem; }
+form input,form select,form textarea { display:block; width:100%; background:white; border:1px solid #8590a3; border-radius:0; padding:.8rem; margin-top:.5rem; font:inherit; color:var(--ink); min-height:48px; }
+form input:focus-visible,form select:focus-visible,form textarea:focus-visible { outline:3px solid var(--blue); outline-offset:3px; }
+form textarea { resize:vertical; }
+form button { cursor:pointer; border:0; }
+form button:disabled { opacity:.55; cursor:not-allowed; }
+.form-notice { border-left:3px solid var(--blue); padding:1rem; background:#edf0f4; }
+[hidden] { display:none!important; }
+@media(max-width:600px) { .form-grid { grid-template-columns:1fr; gap:0; } }
+.industry-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:3rem; }
+.industry-grid article { border-top:1px solid var(--line); padding-top:2rem; }
+.industry-grid p { color:var(--muted); }
+.delivery-steps { list-style:none; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2rem; }
+.delivery-steps li { border-top:1px solid var(--line); padding-top:1.5rem; }
+.delivery-steps h3 { font-size:2rem; }
+.delivery-steps p { color:var(--muted); }
+.process-action { margin-top:2rem; }
+.footer-navigation { display:flex; flex-wrap:wrap; gap:1rem 2rem; padding:2rem var(--pad); background:#040d20; color:white; position:relative; z-index:5; }
+@media(max-width:700px) { .industry-grid,.delivery-steps { grid-template-columns:1fr; } }
 .hero { position:relative; isolation:isolate; overflow:hidden; }
 .hero > .scene-shell { position:absolute; top:0; right:0; width:48%; height:100%; z-index:0; }
 .hero > .content { position:relative; z-index:1; }
 .hero > .hero-note { position:absolute; z-index:1; }
+.sales-hero { background:#07152e; color:#f7f8fa; }
+.sales-hero h1 { font-size:clamp(3rem,4.7vw,5.2rem); line-height:1.02; }
+.sales-hero .lead,.sales-hero .capability-line,.sales-hero .hero-note { color:#bac7dd; }
+.sales-hero .eyebrow { color:#a9bde3; }
+.sales-hero .button-primary { background:#f7f8fa; color:#07152e; }
+.sales-hero .button-text { color:#f7f8fa; border-color:#a9bde3; }
+.sales-hero .scene-fallback img { filter:brightness(1.8); }
+@media(min-width:901px) { .sales-hero .content { max-width: min(720px,52vw); } }
+@media(max-width:700px) { .hero > .scene-shell { opacity:.8; } }
 @media (max-width:900px) {
   .hero { padding-bottom:calc(36svh + 3rem); }
   .hero > .scene-shell { top:auto; bottom:1.5rem; width:100%; height:36svh; opacity:1; }
 }
+
+.site-header { background:rgba(247,248,250,.96); }
+
+.marketing-heading { white-space:pre-line; }
+
+@media(max-width:900px) { html:not(.js-navigation) .site-header { position:relative; } }
+
+/* Analytics controls stay in normal flow and do not cover page content. */
+[data-measurement] { margin: 1rem auto; max-width: 70rem; padding: 1.25rem; border: 1px solid var(--line, #d8dce2); }
+[data-measurement] button, [data-preferences] { padding: .7rem 1rem; margin: .25rem; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+[data-preferences] { margin: 1rem; }

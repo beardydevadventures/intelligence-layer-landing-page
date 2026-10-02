@@ -1,6 +1,26 @@
+> Current Phase 1 release boundary: the continuation is preparation only. Historical production setup below is not permission to deploy or publish. See [release checklist](RELEASE-CHECKLIST.md), [Guy's editing handover](CMS-HANDOVER.md), [HubSpot setup](HUBSPOT-SETUP.md) and [measurement setup](MEASUREMENT.md) for current evidence and pending acceptance.
+
 # Intelligence Layer
 
 Astro static website for AI automation and immersive technology. Page layout, routing, semantic HTML, animation and SEO generation stay in code; editable marketing and editorial content lives in Sanity.
+
+## Phase 1 sales-ready branch
+
+The current route and acceptance record is in `PHASE-1.md`. Commercial navigation includes Services, Industries, Work, About and Start a Project. Existing AI/XR and project URLs are preserved. Four core service pages and a seven-sector industry page use outcome-led copy; potential use cases are not past-client claims. The homepage follows positioning, services, sectors, process, work, delivery credibility, ventures and enquiry.
+
+The **Page headings & enquiry copy** singleton groups remaining marketing headings, page introductions, CTA labels and enquiry/confirmation copy. Blank fields use the displayed defaults; no existing documents need to be overwritten. Homepage heading line breaks remain editable. Form controls, loading/error messages, navigation categories and technical labels remain in code. The new **Industries, process & About** singleton edits sector copy and service mappings, all six delivery stages, About text and team information. Only team entries explicitly approved for publication render. Matthew and Guy are named per the Phase 1 instruction, with no invented titles, biographies or credentials. Existing Site Settings, Homepage, Services and Projects retain their editing workflow. Draft preview includes the new content. The seed exporter now prepares twelve documents; `--missing` preserves all existing CMS documents. On an existing dataset it adds only the six missing Phase 1 documents. Review the generated file before import.
+
+Activation after branch approval requires updating Studio separately, importing the missing documents and extending the existing published-only webhook filter to `_type in ["siteSettings", "homepage", "commercialContent", "marketingCopy", "service", "project", "insight"] && !(_id in path("drafts.**")) && !(_id in path("versions.**"))`. Do not publish or deploy just to test this branch. Verify Guy can log in, save a draft, review it and publish after release authorisation; confirm the host completes a successful rebuild and measure the elapsed time. Earlier publishing evidence does not verify the new content type or guarantee a 2–3 minute build.
+
+### HubSpot enquiry activation
+
+Set `PUBLIC_HUBSPOT_PORTAL_ID` and `PUBLIC_HUBSPOT_FORM_ID` to public identifiers for a dedicated enquiry form. No browser API token is used. The form must accept contact properties `firstname`, `lastname`, `company`, `email`, `phone`, and `message`; only email, company and first name should be required on the HubSpot side. Qualification answers are combined in `message`. Configure lead-owner notifications and review the form's consent and spam requirements in HubSpot. If it requires a CAPTCHA or consent payload, adapt the integration to those actual settings before enabling it. No marketing subscription is requested by the website.
+
+The implementation uses [HubSpot's documented browser submission endpoint](https://developers.hubspot.com/docs/api-reference/legacy/marketing/forms/v3-legacy/submit-data-unauthenticated). A real accepted submission and CRM receipt must be verified before ILW-7 is Done. Missing or invalid identifiers disable online submission and present the working email route. Errors retain the visitor's input; success is shown only after an accepted response. Nothing is stored in local storage or placed in URL parameters.
+
+### Measurement and launch
+
+Start a Project clicks and confirmed enquiries emit `intelligence-layer:conversion` custom events with only an event name and pathname. The event hook is ready for an approved analytics collector; it does not itself collect analytics. Analytics provider/property, consent handling and Search Console verification remain release dependencies. `PUBLIC_GOOGLE_SITE_VERIFICATION` can supply the site's verification meta token when authorised. Do not fabricate identifiers or treat local events as measured conversions.
 
 ## Development
 
@@ -45,7 +65,7 @@ npm run cms:deploy
 npm run build
 ```
 
-`cms:seed` only exports the existing approved copy to an ignored NDJSON file. Import with `--missing` so existing document IDs are preserved. It includes Site Settings, Homepage, VR Development and the three approved project summaries. It does not create invented articles, testimonials, metrics, client names, collaborators or future service pages.
+`cms:seed` only exports the existing approved copy to an ignored NDJSON file. Import with `--missing` so existing document IDs are preserved. It exports twelve documents: Site Settings, Homepage, Industries/process/About, Page headings & enquiry copy, five services including VR Development, and the three approved project summaries. Nothing is imported by this command. It does not create invented articles, testimonials, metrics, client names, collaborators or future service pages.
 
 ### Drafts and preview
 
@@ -59,7 +79,7 @@ Editors save drafts automatically and use Studio's **Publish** action. Published
 
 - Dataset: `production`.
 - Trigger: create, update and delete.
-- Filter: `_type in ["siteSettings", "homepage", "service", "project", "insight"] && !(_id in path("drafts.**")) && !(_id in path("versions.**"))`.
+- Filter: `_type in ["siteSettings", "homepage", "commercialContent", "marketingCopy", "service", "project", "insight"] && !(_id in path("drafts.**")) && !(_id in path("versions.**"))`.
 - Payload projection: `{ "_id": _id, "_type": _type }`.
 - Draft events: disabled. Do not trigger rebuilds while typing drafts.
 - Destination: the actual host's build-hook URL; keep it out of Git and CMS content. Use webhook signing if the host/receiver supports it. With a custom receiver, verify the signature before accepting requests.

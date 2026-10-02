@@ -1,0 +1,46 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import {getContent} from '../lib/sanity/content';
+import {hubspotEndpoint} from '../lib/enquiry';
+const {settings, services,marketing} = await getContent();
+const endpoint = import.meta.env.PUBLIC_HUBSPOT_FIELDS_CONFIRMED === 'true' ? hubspotEndpoint(import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID || '',import.meta.env.PUBLIC_HUBSPOT_FORM_ID || '') : '';
+---
+<SiteLayout title="Start a Project | Intelligence Layer" description="Tell Intelligence Layer about your AI automation, enterprise agent, immersive experience or digital twin project. Based in Brisbane, working across Australia."><main id="main"><header class="editorial-header"><p class="eyebrow">Start a project</p><h1>{marketing.enquiryHeading}</h1><p class="lead">{marketing.enquiryIntroduction}</p><p>{marketing.enquiryNextSteps}</p></header><section class="editorial-body enquiry-section" aria-label="Project enquiry">
+<p>{marketing.enquiryEmailIntroduction} <a class="inline-link" href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></p>
+{!endpoint && <p class="form-notice">{marketing.enquiryUnavailableCopy}</p>}
+<noscript><p>Please email us to enquire; online submission requires JavaScript.</p></noscript>
+<form id="project-enquiry" data-endpoint={endpoint} aria-describedby="enquiry-help">
+<p id="enquiry-help">Required fields are marked *. {marketing.enquiryInformationGuidance}</p>
+<div class="form-grid"><label>Your name *<input name="name" autocomplete="name" required maxlength="120" /></label><label>Organisation *<input name="organisation" autocomplete="organization" required maxlength="160" /></label><label>Email *<input name="email" type="email" autocomplete="email" required maxlength="254" /></label><label>Phone <input name="phone" type="tel" autocomplete="tel" maxlength="40" /></label></div>
+<label>Project / service type *<select name="service" required><option value="">Choose a service</option>{services.filter(s=>s.slug !== 'vr-development').map(s=><option value={s.title}>{s.title}</option>)}<option>Not sure yet</option></select></label>
+<label>Problem or opportunity *<textarea name="problem" required rows="5" maxlength="4000" placeholder="What would you like to change, and who would use the solution?"></textarea></label>
+<div class="form-grid"><label>Approximate budget <select name="budget"><option value="">Not sure yet</option><option>Under $10,000 AUD</option><option>$10,000–$30,000 AUD</option><option>$30,000–$75,000 AUD</option><option>$75,000–$150,000 AUD</option><option>$150,000+ AUD</option></select></label><label>Desired timeline <input name="timeline" maxlength="200" placeholder="For example, exploring now or launch in six months" /></label></div>
+<label>Preferred contact method *<select name="contactMethod" required><option>Email</option><option>Phone</option></select></label>
+<p>{marketing.enquiryDataHandlingCopy}</p>
+<button class="button button-primary" type="submit" disabled={!endpoint}>{marketing.enquirySubmitLabel} <span aria-hidden="true">↗</span></button>
+<p id="enquiry-status" role="status" aria-live="polite" tabindex="-1"></p>
+</form>
+<div id="enquiry-success" hidden tabindex="-1"><h2>{marketing.enquirySuccessHeading}</h2><p>{marketing.enquirySuccessCopy}</p><p><a class="inline-link" href="/work/">{marketing.enquirySuccessLinkLabel}</a></p></div>
+</section></main></SiteLayout>
+<script>
+import {submitEnquiry} from '../lib/enquiry';
+import type {Enquiry} from '../lib/enquiry';
+const form=document.querySelector<HTMLFormElement>('#project-enquiry');
+const status=document.querySelector<HTMLElement>('#enquiry-status');
+const success=document.querySelector<HTMLElement>('#enquiry-success');
+const button=form?.querySelector<HTMLButtonElement>('button[type=submit]');
+form?.addEventListener('submit',async event=>{
+ event.preventDefault();
+ if (!button || button.disabled || !status) return;
+ const data=Object.fromEntries(new FormData(form).entries()) as unknown as Enquiry;
+ const phone=form.querySelector<HTMLInputElement>('[name=phone]');
+ phone?.setCustomValidity(data.contactMethod === 'Phone' && !data.phone.trim() ? 'Enter a phone number so we can call you.' : '');
+ if (!form.reportValidity()) return;
+ button.disabled=true; form.setAttribute('aria-busy','true'); status.textContent='Sending your enquiry…';
+ try {await submitEnquiry(form.dataset.endpoint || '',data,`${location.origin}${location.pathname}`);form.hidden=true; if(success){success.hidden=false;success.focus();}window.dispatchEvent(new CustomEvent('intelligence-layer:conversion',{detail:{event:'project_enquiry_success',path:location.pathname}}));}
+ catch {status.textContent='We could not confirm your enquiry. Your details remain here so you can try again, or email us directly.';status.focus();}
+ finally {button.disabled=false;form.removeAttribute('aria-busy');}
+});
+form?.querySelector<HTMLInputElement>('[name=phone]')?.addEventListener('input',event=>(event.target as HTMLInputElement).setCustomValidity(''));
+form?.querySelector<HTMLSelectElement>('[name=contactMethod]')?.addEventListener('change',()=>form.querySelector<HTMLInputElement>('[name=phone]')?.setCustomValidity(''));
+</script>

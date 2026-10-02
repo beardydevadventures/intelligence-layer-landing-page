@@ -21,7 +21,7 @@ export class IntelligenceLayerScene {
 
   constructor(private canvas: HTMLCanvasElement, renderer?: WebGPURenderer) {
     this.renderer = renderer ?? new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.camera.position.set(0, 0, 12);
@@ -63,12 +63,12 @@ export class IntelligenceLayerScene {
     if (!this.visible) { this.frame = 0; return; }
     this.frame = requestAnimationFrame(this.animate);
     const t = (performance.now() - this.startedAt) / 1000;
-    this.mark.update(this.state.spread, t);
-    this.group.position.y = Math.sin(t * 0.7) * 0.07;
+    this.mark.update(this.state.spread + Math.sin(t * 0.55) * 0.045, t);
+    this.group.position.y = Math.sin(t * 0.7) * 0.12;
     this.group.rotation.y += (-0.12 + this.state.rotation + Math.sin(t * 0.28) * 0.08 + this.pointer.x - this.group.rotation.y) * 0.035;
     this.group.rotation.x += (Math.sin(t * 0.35) * 0.025 + this.pointer.y - this.group.rotation.x) * 0.025;
     this.group.rotation.z = Math.sin(t * 0.38) * 0.015;
-    this.group.scale.setScalar(this.state.scale);
+    this.group.scale.setScalar(this.state.scale * 0.82);
     updateMarkMaterials(this.mark, this.state.accent, t);
     this.renderer.render(this.scene, this.camera);
   };
