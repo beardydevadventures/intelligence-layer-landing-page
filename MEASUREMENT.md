@@ -1,6 +1,6 @@
 # Measurement setup and verification
 
-Prepared for ILW-45; not activated or verified in production. GA4 is the proposed collector, pending Matthew's property/provider confirmation. No measurement ID or Search Console token is configured locally.
+Prepared for ILW-45; not activated or verified in production. Matthew supplied GA4 web stream `G-K1JYDN0R1X` on 3 October 2026; it is configured in the feature branch public build environment. Matthew also confirms the Search Console URL property is added and verified. No verification token is needed for an already verified property. Actual event receipt and sitemap submission remain unverified. Production has not been activated.
 
 ## Configuration for an authorised release
 
