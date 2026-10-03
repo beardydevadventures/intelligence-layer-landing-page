@@ -1,0 +1,3 @@
+/demos/digital-twin-operations https://intelligence-layer-digital-twin.pages.dev/ 301
+/demos/digital-twin-operations/ https://intelligence-layer-digital-twin.pages.dev/ 301
+/demos/digital-twin-operations/* https://intelligence-layer-digital-twin.pages.dev/:splat 301
