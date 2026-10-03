@@ -59,7 +59,7 @@ export function normalizeContent(value: unknown, configured = false): SiteConten
   industries: Array.isArray(rawCommercial.industries) ? list(rawCommercial.industries).map(record).map(r=>({title:text(r.title),description:text(r.description),services:strings(r.services).filter(s=>coreServices.some(service=>service.slug===s))})).filter(r=>r.title && r.description) : industries,
   processSteps: items(rawCommercial.processSteps).length === 6 ? items(rawCommercial.processSteps) : processSteps,
   about:{title:text(rawCommercial.aboutTitle,aboutCopy.title),introduction:text(rawCommercial.aboutIntroduction,aboutCopy.introduction),delivery:text(rawCommercial.aboutDelivery,aboutCopy.delivery),evidence:text(rawCommercial.aboutEvidence,aboutCopy.evidence)},
-  team:Array.isArray(rawCommercial.team) ? list(rawCommercial.team).map(record).filter(r=>r.approvedForPublication === true).map(r=>({name:text(r.name),role:text(r.role),biography:text(r.biography),image:editorialImage(r.image)})).filter(r=>r.name) : [{name:'Matthew Aisthorpe',role:'',biography:''},{name:'Guy',role:'',biography:''}],
+  team:Array.isArray(rawCommercial.team) ? list(rawCommercial.team).map(record).filter(r=>r.approvedForPublication === true).map(r=>({name:text(r.name),role:text(r.role),biography:text(r.biography),image:editorialImage(r.image)})).filter(r=>r.name) : [],
  };
  const rawMarketing=record(raw.marketing), marketing={...defaultMarketingCopy};
  for(const key of marketingKeys) marketing[key]=text(rawMarketing[key],defaultMarketingCopy[key]);

@@ -58,6 +58,8 @@ class Page(HTMLParser):
 pages = {}
 for file in ROOT.rglob('*.html'):
     rel = file.relative_to(ROOT).as_posix()
+    # Standalone WebGL demonstrators have separate interaction/browser verification.
+    if rel.startswith('demos/'): continue
     route = '/' + rel.removesuffix('index.html') if rel.endswith('index.html') else '/' + rel
     pages[route] = Page(file.read_text(encoding='utf-8'))
 assert pages, 'No generated pages; run npm run build first.'
@@ -86,7 +88,7 @@ for route, page in pages.items():
         if target in pages:
             if url.fragment: check(unquote(url.fragment) in pages[target].ids, f'Broken anchor: {link}')
         else:
-            check((ROOT / target.lstrip('/')).is_file(), f'Broken local link/asset: {link}')
+            check((ROOT / target.lstrip('/')).is_file() or (target.startswith('/demos/') and (ROOT / target.lstrip('/') / 'index.html').is_file()), f'Broken local link/asset: {link}')
     if route.startswith(('/ai/', '/xr/')):
         check(any(item.get('@type') == 'Service' for schema in page.schemas for item in schema.get('@graph', [])), 'Missing Service schema')
 

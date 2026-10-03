@@ -9,8 +9,8 @@ import {defaultMarketingCopy,marketingKeys} from '../src/data/marketing';
 const project = {_id:'project-one',_type:'project',slug:'one',title:'Real project',shortDescription:'Approved involvement.',featured:true,platforms:['Meta Quest']};
 const image = {alt:'Spatial crafting interface',caption:'Real project capture',asset:{url:'https://cdn.sanity.io/images/gr23tee8/production/example-1600x900.png',metadata:{dimensions:{width:1600,height:900}}}};
 const paragraph = {_type:'block',_key:'p',style:'normal',children:[{_type:'span',_key:'s',text:'Useful article content',marks:[]}],markDefs:[]};
-test('offline baseline preserves the approved projects and VR page', () => {
- const result=normalizeContent({},false); assert.equal(result.projects.length,3); assert.equal(result.services[0].headline,'Custom Virtual Reality Development'); assert.equal(result.homepage.featuredProjects.length,3);
+test('offline baseline does not resurrect retired projects or founder names', () => {
+ const result=normalizeContent({},false); assert.equal(result.projects.length,0); assert.equal(result.services[0].headline,'Custom Virtual Reality Development'); assert.equal(result.homepage.featuredProjects.length,0); assert.deepEqual(result.commercial.team,[]); assert.doesNotMatch(JSON.stringify(result),/Diamond Easy|Brisbane 2032|Matthew Aisthorpe/);
 });
 test('configured content is authoritative and does not republish removed projects', () => {
  const result=normalizeContent({},true); assert.equal(result.projects.length,0); assert.equal(result.homepage.featuredProjects.length,0); assert.equal(result.services[0].slug,'vr-development');
