@@ -81,3 +81,18 @@ test('every editable marketing field is projected and accepts a nonempty editor 
  assert.deepEqual(result.marketing,overrides);
  for(const key of marketingKeys) assert.ok(siteQuery.includes(key));
 });
+
+test('owned-product content, media and empty selections remain CMS authoritative', () => {
+ const product={title:'CMS-owned product',positioning:'Editable positioning',description:'Editable description',url:'https://example.com/product',ctaLabel:'Open product',image,status:'Available'};
+ const result=normalizeContent({homepage:{ventures:[product,{title:'Private build',description:'Not yet launched',url:'javascript:alert(1)',image:{alt:'Missing asset'}}]}},true);
+ assert.equal(result.homepage.ventures.length,2);
+ assert.equal(result.homepage.ventures[0].positioning,'Editable positioning');
+ assert.equal(result.homepage.ventures[0].url,'https://example.com/product');
+ assert.equal(result.homepage.ventures[0].ctaLabel,'Open product');
+ assert.equal(result.homepage.ventures[0].image?.alt,image.alt);
+ assert.equal(result.homepage.ventures[1].url,undefined);
+ assert.equal(result.homepage.ventures[1].image,undefined);
+ assert.deepEqual(normalizeContent({homepage:{ventures:[]}},true).homepage.ventures,[]);
+ assert.deepEqual(normalizeContent({},false).homepage.ventures,[]);
+ assert.match(siteQuery,/ventures\[\]\{title, positioning, description, url, ctaLabel, status, image/);
+});

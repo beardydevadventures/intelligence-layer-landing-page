@@ -205,3 +205,12 @@ form button:disabled { opacity:.55; cursor:not-allowed; }
 [data-measurement] { margin: 1rem auto; max-width: 70rem; padding: 1.25rem; border: 1px solid var(--line, #d8dce2); }
 [data-measurement] button, [data-preferences] { padding: .7rem 1rem; margin: .25rem; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
 [data-preferences] { margin: 1rem; }
+
+/* Real product media and CMS-defined owned-product cards. */
+.product-media { margin:0; min-width:0; }
+.product-media img { display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:8px; }
+.product-media figcaption { margin-top:.75rem; color:var(--muted); font-size:.75rem; }
+.product-copy>p.product-positioning { color:var(--ink); font-weight:600; }
+.product-cta { display:inline-block; margin-top:1.5rem; }
+.product-card-text-only { grid-template-columns:1fr; min-height:0; }
+.product-card-text-only .product-copy>p { max-width:660px; }

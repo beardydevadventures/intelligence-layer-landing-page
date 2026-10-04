@@ -38,9 +38,10 @@ export function ContentPreview({document}: Props) {
   {doc._type === 'homepage' && <>
    <h2>{text(doc.aiHeading)}</h2><p>{text(doc.aiIntroduction)}</p><ul>{list(doc.aiCapabilities).map((v,i) => <li key={i}>{text(v)}</li>)}</ul>
    <h2>{text(doc.xrHeading)}</h2><p>{text(doc.xrIntroduction)}</p>
+   <h2>Products</h2><p>{text(doc.productsIntroduction)}</p>{list(resolved.ventures).map((value,i)=>{const product=record(value);return <section key={i}><h3>{text(product.title)}</h3><p>{text(product.positioning)}</p><p>{text(product.description)}</p>{renderImage(editorialImage(product.image))}<p>{text(product.status)}</p>{safeUrl(product.url) && <a href={safeUrl(product.url)}>{text(product.ctaLabel)}</a>}</section>;})}
    <h2>What could we build together?</h2><p>{text(doc.buildIntroduction)}</p>
   </>}
-  {['xrCategories','outcomes','useCases','capabilities','ventures','industries','processSteps'].map(key => items(doc[key]).map((item,i) => <section key={`${key}-${i}`}><h2>{item.title}</h2><p>{item.description}</p></section>))}
+  {['xrCategories','outcomes','useCases','capabilities','industries','processSteps'].map(key => items(doc[key]).map((item,i) => <section key={`${key}-${i}`}><h2>{item.title}</h2><p>{item.description}</p></section>))}
   {doc._type === 'commercialContent' && <><p>{text(doc.aboutIntroduction)}</p><h2>Delivery</h2><p>{text(doc.aboutDelivery)}</p><h2>Evidence</h2><p>{text(doc.aboutEvidence)}</p><h2>Team</h2>{list(doc.team).map((value,i)=>{const person=record(value);return <section key={i}><h3>{text(person.name)}</h3><p>{text(person.role)}</p><p>{text(person.biography)}</p>{renderImage(editorialImage(person.image))}<p>{person.approvedForPublication === true ? 'Approved for publication' : 'Not displayed publicly'}</p></section>;})}</>}
   <PortableText value={portableText(resolved.body) as PortableTextBlock[]} components={{types: {
    editorialImage: ({value}) => renderImage(value.image as EditorialImage),

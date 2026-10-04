@@ -40,7 +40,11 @@ export function normalizeContent(value: unknown, configured = false): SiteConten
  for (const key of ['heroEyebrow','heroHeading','heroIntroduction','primaryCtaLabel','secondaryCtaLabel','workIntroduction','aiHeading','aiIntroduction','xrHeading','xrIntroduction','buildIntroduction','processIntroduction','productsIntroduction','finalCtaHeading','finalCtaCopy'] as const) homepage[key] = text(rawHome[key], defaultHomepage[key]);
  homepage.primaryCtaDestination = safeUrl(rawHome.primaryCtaDestination, defaultHomepage.primaryCtaDestination);
  homepage.aiCapabilities = strings(rawHome.aiCapabilities).length ? strings(rawHome.aiCapabilities) : defaultHomepage.aiCapabilities;
- for (const key of ['xrCategories','outcomes','ventures'] as const) homepage[key] = items(rawHome[key]).length ? items(rawHome[key]) : defaultHomepage[key];
+ for (const key of ['xrCategories','outcomes'] as const) homepage[key] = items(rawHome[key]).length ? items(rawHome[key]) : defaultHomepage[key];
+ homepage.ventures = list(rawHome.ventures).map(record).map(r => {
+  const url = safeUrl(r.url);
+  return {title:text(r.title),positioning:text(r.positioning),description:text(r.description),image:editorialImage(r.image),url:url.startsWith('https://') ? url : undefined,ctaLabel:text(r.ctaLabel) || undefined,status:text(r.status) || undefined};
+ }).filter(r => r.title && r.description);
  homepage.featuredProjects = Array.isArray(rawHome.featuredProjectIds) ? byIds(rawHome.featuredProjectIds) : projects.filter(p => p.featured);
  const insightSlugs = new Set<string>();
  const insights: Insight[] = list(raw.insights).filter(published).flatMap(v => {

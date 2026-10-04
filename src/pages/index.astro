@@ -1,17 +1,13 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import SceneCanvas from '../components/experience/SceneCanvas.astro';
-import ProductMockup from '../components/ProductMockup.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProcessSection from '../components/ProcessSection.astro';
 import ContactSection from '../components/ContactSection.astro';
 import {getContent} from '../lib/sanity/content';
 import {pageSeo} from '../lib/sanity/seo';
-import {defaultHomepage} from '../lib/sanity/defaults';
 import {site} from '../data/site';
-import {ScanSearch, ClipboardCheck, MessageSquare} from '@lucide/astro';
 const {homepage, settings, services, commercial, marketing} = await getContent();
-const products = [{type:'cyber',icon:ScanSearch},{type:'cleaning',icon:ClipboardCheck},{type:'inlyr',icon:MessageSquare}] as const;
 const offers = services.filter(s=>s.slug !== 'vr-development');
 ---
 <SiteLayout {...pageSeo(homepage.seo,settings,undefined,undefined,'/')} schema={[{'@type':'WebSite','@id':`${site.url}/#website`,url:`${site.url}/`,name:settings.companyName,publisher:{'@id':`${site.url}/#organisation`},inLanguage:'en-AU'}]}>
@@ -22,5 +18,5 @@ const offers = services.filter(s=>s.slug !== 'vr-development');
 <ProcessSection />
 <section class="work" id="work"><div class="section-head"><div><p class="section-index">04 / Selected work</p><h2 class="marketing-heading">{marketing.homepageWorkHeading}</h2></div><p>{homepage.workIntroduction}</p></div><div class="project-grid">{homepage.featuredProjects.map(project=><ProjectCard project={project} />)}</div><p class="process-action"><a class="inline-link" href="/work/">{marketing.viewWorkLabel}</a></p></section>
 <section class="service-section" id="credibility"><p class="section-index">05 / Connected delivery</p><h2 class="marketing-heading">{marketing.homepageCredibilityHeading}</h2><p class="lead">{commercial.about.delivery}</p><p><a class="inline-link" href="/about/">{marketing.aboutLinkLabel}</a></p></section>
-<section class="products" id="products" data-scene="products"><div class="section-head"><div><p class="section-index">06 / Products & Ventures</p><h2 class="marketing-heading">{marketing.homepageProductsHeading}</h2></div><p>{homepage.productsIntroduction}</p></div><div class="product-list">{products.map((product, i) => { const Icon = product.icon; return <article class="product-card"><div class="product-copy"><span class="icon-frame icon-frame-dark"><Icon size={24} stroke-width={1.5} /></span><p class="product-num">0{i + 1}</p><h3>{homepage.ventures[i]?.title || defaultHomepage.ventures[i].title}</h3><p>{homepage.ventures[i]?.description || defaultHomepage.ventures[i].description}</p><small class="product-status">In development</small></div><ProductMockup type={product.type} /></article>; })}</div></section>
+<section class="products" id="products" data-scene="products"><div class="section-head"><div><p class="section-index">06 / Products</p><h2 class="marketing-heading">{marketing.homepageProductsHeading}</h2></div><p>{homepage.productsIntroduction}</p></div><div class="product-list">{homepage.ventures.map((product, i) => <article class:list={['product-card', {'product-card-text-only': !product.image}]}><div class="product-copy"><p class="product-num">{String(i + 1).padStart(2, '0')}</p><h3>{product.title}</h3>{product.positioning && <p class="product-positioning">{product.positioning}</p>}<p>{product.description}</p>{product.status && <small class="product-status">{product.status}</small>}{product.url && product.ctaLabel && <a class="inline-link product-cta" href={product.url}>{product.ctaLabel} <span aria-hidden="true">&#8599;</span></a>}</div>{product.image && <figure class="product-media"><img src={product.image.src} srcset={product.image.srcset} sizes="(max-width: 900px) 100vw, 55vw" alt={product.image.alt} width={product.image.width} height={product.image.height} loading="lazy" decoding="async" />{product.image.caption && <figcaption>{product.image.caption}</figcaption>}</figure>}</article>)}</div></section>
 <ContactSection /></main></SiteLayout>
