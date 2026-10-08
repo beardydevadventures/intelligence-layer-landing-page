@@ -1,0 +1,40 @@
+---
+const traces = [
+  'M-60 40 H180 L330 190 H500 L565 125 H720',
+  'M1050 -40 L925 145 H805 L740 210 H655',
+  'M1490 100 L1280 310 H1195 L1080 425 H1000',
+  'M1490 610 L1285 405 H1230 L1130 505 H1020',
+  'M-40 705 L210 530 H310 L365 585 H520',
+  'M1450 790 L1240 650 H1110 L1040 720 H880',
+];
+---
+<div class="banner-atmosphere" aria-hidden="true">
+  <div class="carbon"></div>
+  <svg class="circuitry" viewBox="0 0 1440 850" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <defs>
+      <pattern id="banner-hex" width="42" height="73" patternUnits="userSpaceOnUse"><path d="M21 0 42 12 V36 L21 49 0 36 V12 Z M21 49 V73 M0 36 V61 L21 73 42 61 V36" fill="none" stroke="#42cbec" stroke-width="1" /></pattern>
+    </defs>
+    <path class="hex" d="M810 0 H1440 V850 H990 L1100 620 970 400Z" fill="url(#banner-hex)" />
+    {traces.map((d,i)=><g style={`--delay:${i * -1.7}s`}><path class="trace" d={d} /><path class="pulse" d={d} pathLength="100" /></g>)}
+  </svg>
+  <div class="fog fog-one"></div><div class="fog fog-two"></div>
+  <div class="shade"></div>
+</div>
+<style>
+.banner-atmosphere { position:absolute; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:radial-gradient(ellipse at 78% 45%,#0b3552 0%,#061829 44%,#030c19 100%); }
+.carbon { position:absolute; inset:0; opacity:.18; background:repeating-linear-gradient(135deg,transparent 0 5px,#28516b 5px 7px,transparent 7px 12px); mask-image:linear-gradient(110deg,#000,transparent 45%,#000); }
+.circuitry { position:absolute; width:100%; height:100%; }
+.hex { opacity:.055; }
+.trace,.pulse { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.trace { stroke:#18bddf; stroke-width:1.5; opacity:.26; }
+.pulse { stroke:#72eeff; stroke-width:2; stroke-dasharray:12 88; filter:drop-shadow(0 0 5px #00cfff); animation:signal-flow 12s linear infinite,signal-glow 6s ease-in-out infinite; animation-delay:var(--delay); opacity:.65; }
+.fog { position:absolute; width:75%; height:60%; border-radius:50%; background:radial-gradient(ellipse,rgba(75,163,190,.14),rgba(26,95,132,.06) 40%,transparent 68%); filter:blur(35px); will-change:transform; }
+.fog-one { top:10%; left:35%; animation:fog-drift 26s ease-in-out infinite alternate; }
+.fog-two { bottom:-25%; left:10%; opacity:.6; animation:fog-drift 32s ease-in-out -12s infinite alternate-reverse; }
+.shade { position:absolute; inset:0; background:linear-gradient(90deg,rgba(3,12,25,.8),rgba(3,12,25,.5) 42%,transparent 72%),linear-gradient(0deg,rgba(3,12,25,.65),transparent 25%); }
+@keyframes signal-flow { to { stroke-dashoffset:-100; } }
+@keyframes signal-glow { 0%,100% { opacity:.3; } 50% { opacity:.85; } }
+@keyframes fog-drift { from { transform:translate3d(-5%,0,0) scale(1); } to { transform:translate3d(8%,-8%,0) scale(1.15); } }
+@media(max-width:900px) { .shade { background:linear-gradient(180deg,rgba(3,12,25,.7),rgba(3,12,25,.4) 55%,transparent); } .pulse { opacity:.45; } .fog { filter:blur(22px); } }
+@media(prefers-reduced-motion:reduce) { .pulse,.fog { animation:none; will-change:auto; } .pulse { stroke-dasharray:none; opacity:.35; } }
+</style>
